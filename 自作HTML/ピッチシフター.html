@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="style.css" rel="stylesheet">
+		<meta charset="utf-8">
+		<meta content="width=device-width" name="viewport">
+		<style>
+			html,body{
+				height:calc(100% - 16px);
+			}
+		</style>
+		<title>ピッチシフター</title>
+	</head>
+	<body>
+		<button id="selectButton">音声を選択</button>
+		<audio controls id="audio">
+		</audio>
+		<input id="rate" placeholder="速さの倍率（JavaScript式可）">
+		<button id="changeButton">速さを変更</button>
+		<script>
+			selectButton.onclick=()=>Object.assign(document.createElement("input"),{
+				onchange:()=>Object.assign(new FileReader,{
+					onload:()=>audio.src=event.target.result
+				}).readAsDataURL(event.target.files[0]),type:"file"
+			}).click();
+			audio.onratechange=()=>rate.value=event.target.playbackRate;
+			audio["preservesPitch"in audio?"preservesPitch":"webkitPreservesPitch"]=false;
+			changeButton.onclick=()=>audio.playbackRate=eval(rate.value)||1;
+		</script>
+	</body>
+</html>
