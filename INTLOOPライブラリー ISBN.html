@@ -64,8 +64,8 @@
 			if(confirm("図書の内容は以下ですか?\n\n"+Object.entries({
 				題名:items[0].volumeInfo.title,著者:items[0].volumeInfo.authors.join("、"),ISBN:result.codeResult.code
 			}).map(entry=>entry.join(": ")).join("\n"))){
-				//const response=await fetch(うんぬん)//借りているかを、スプレッドシートのGASにフェッチして確認
-				open(true||await response.json()?
+				const response=await fetch("https://script.google.com/macros/s/AKfycbx2Iksqz5JihaJKVJakdnP0E6K_15N4bzuEAvXGVaVFmA63BhQVw6pt6VuvZWYzlUWh/exec?isbn="+result.codeResult.code)
+				open(await response.json()?
 					"https://docs.google.com/forms/d/e/1FAIpQLSdu_2j4p3ubst0eoFRZaHoSZEbFB2SJkvzbSlxkh6qJXCMcFw/viewform?usp=pp_url&entry.772749012="+result.codeResult.code
 				:"https://docs.google.com/forms/d/e/1FAIpQLSdu_2j4p3ubst0eoFRZaHoSZEbFB2SJkvzbSlxkh6qJXCMcFw/viewform?usp=pp_url&entry.772749012="+result.codeResult.code)//延長・返却用のもう一つのフォームURL
 			}
