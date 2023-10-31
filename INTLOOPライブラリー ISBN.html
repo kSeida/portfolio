@@ -45,14 +45,15 @@
 		Quagga.start()
 	})
 	Quagga.onProcessed(async result=>{
-		const{ctx,dom}=Quagga.canvas
-		ctx.overlay.clearRect(0,0,~~dom.overlay.width,~~dom.overlay.height)
-		if(result===undefined) return
+		Quagga.canvas.ctx.overlay.clearRect(0,0,~~Quagga.canvas.dom.overlay.width,~~Quagga.canvas.dom.overlay.height)
+		if(result===undefine) return
 		for(const box of result.boxes){
-			Quagga.ImageDebug.drawPath(box,{x:0,y:1},ctx.overlay,{color:"#00f",lineWidth:2})
+			Quagga.ImageDebug.drawPath(box,{x:0,y:1},Quagga.canvas.ctx.overlay,{color:"#00f",lineWidth:2})
+			Quagga.ImageWrapper.drawPath(box,{x:0,y:1},Quagga.canvas.ctx.overlay,{color:"#0ff",lineWidth:2})
 		}
 		if(result.box===undefined) return
-		Quagga.ImageDebug.drawPath(result.box,{x:0,y:1},ctx.overlay,{color:"#f00",lineWidth:2})
+		Quagga.ImageDebug.drawPath(result.box,{x:0,y:1},Quagga.canvas.ctx.overlay,{color:"#f00",lineWidth:2})
+		Quagga.ImageWrapper.drawPath(result.box,{x:0,y:1},Quagga.canvas.ctx.overlay,{color:"#ff0",lineWidth:2})
 		if(checker!==(checker=result.codeResult.code,checker)) return
 		if(!/^97[89]\d{10}$/.test(result.codeResult.code)) return
 		Quagga.pause();document.querySelector("video").pause()
