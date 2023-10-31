@@ -26,10 +26,10 @@
 	}
 	canvas{
 		left:0;position:absolute;top:0
-	}/*div‚Ì•¶š‚ğA::before‚É“ü‚ê‚é?*/
+	}/*divã®æ–‡å­—ã‚’ã€::beforeã«å…¥ã‚Œã‚‹?*/
 </style>
-<title>INTLOOPƒ‰ƒCƒuƒ‰ƒŠ[</title>
-<div id=description><strong>— •\†‚ÌISBNƒo[ƒR[ƒh‚ÉƒJƒƒ‰‚ğŒü‚¯‚Ä‚­‚¾‚³‚¢BiISBN‚ÍA97 ‚Ån‚Ü‚é13Œ…j</strong></div>
+<title>INTLOOPãƒ©ã‚¤ãƒ–ãƒ©ãƒªãƒ¼</title>
+<div id=description><strong>è£è¡¨ç´™ã®ISBNãƒãƒ¼ã‚³ãƒ¼ãƒ‰ã«ã‚«ãƒ¡ãƒ©ã‚’å‘ã‘ã¦ãã ã•ã„ã€‚ï¼ˆISBNã¯ã€97 ã§å§‹ã¾ã‚‹13æ¡ï¼‰</strong></div>
 <script src="https://cdn.jsdelivr.net/npm/quagga"></script>
 <script>
 	const checker={}
@@ -42,7 +42,7 @@
 		description.remove()
 		Quagga.start()
 	})
-	Quagga.onProcessed(/**/async/**/result=>{
+	Quagga.onProcessed(/*async*/result=>{
 		if(result?.box===undefined) return
 		const{ctx,dom}=Quagga.canvas
 		ctx.overlay.clearRect(0,0,~~dom.overlay.width,~~dom.overlay.height)
@@ -53,13 +53,13 @@
 		if(checker[result.codeResult.code]!=2/*0x10*/) return
 		const response=await fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:"+result.codeResult.code)
 		const{items}=await response.json()
-		if(confirm("}‘‚Ì“à—e‚ÍˆÈ‰º‚Å‚·‚©?\n\n"+Object.entries({
-			‘è–¼:items[0].volumeInfo.title,’˜Ò:items[0].volumeInfo.authors.join("A"),ISBN:result.codeResult.code
+		if(confirm("å›³æ›¸ã®å†…å®¹ã¯ä»¥ä¸‹ã§ã™ã‹?\n\n"+Object.entries({
+			é¡Œå:items[0].volumeInfo.title,è‘—è€…:items[0].volumeInfo.authors.join("ã€"),ISBN:result.codeResult.code
 		}).map(entry=>entry.join(": ")).join("\n"))){
-			//const response=await fetch(‚¤‚ñ‚Ê‚ñ)//Ø‚è‚Ä‚¢‚é‚©‚ğAƒXƒvƒŒƒbƒhƒV[ƒg‚ÌGAS‚ÉƒtƒFƒbƒ`‚µ‚ÄŠm”F
+			//const response=await fetch(ã†ã‚“ã¬ã‚“)//å€Ÿã‚Šã¦ã„ã‚‹ã‹ã‚’ã€ã‚¹ãƒ—ãƒ¬ãƒƒãƒ‰ã‚·ãƒ¼ãƒˆã®GASã«ãƒ•ã‚§ãƒƒãƒã—ã¦ç¢ºèª
 			open(true||await response.json()?
 				"https://docs.google.com/forms/d/e/1FAIpQLSdu_2j4p3ubst0eoFRZaHoSZEbFB2SJkvzbSlxkh6qJXCMcFw/viewform?usp=pp_url&entry.772749012="+result.codeResult.code
-			:"https://docs.google.com/forms/d/e/1FAIpQLSdu_2j4p3ubst0eoFRZaHoSZEbFB2SJkvzbSlxkh6qJXCMcFw/viewform?usp=pp_url&entry.772749012="+result.codeResult.code)//‰„’·E•Ô‹p—p‚Ì‚à‚¤ˆê‚Â‚ÌƒtƒH[ƒ€URL
+			:"https://docs.google.com/forms/d/e/1FAIpQLSdu_2j4p3ubst0eoFRZaHoSZEbFB2SJkvzbSlxkh6qJXCMcFw/viewform?usp=pp_url&entry.772749012="+result.codeResult.code)//å»¶é•·ãƒ»è¿”å´ç”¨ã®ã‚‚ã†ä¸€ã¤ã®ãƒ•ã‚©ãƒ¼ãƒ URL
 		}
 		for(const key in checker) delete checker[key]
 	})
