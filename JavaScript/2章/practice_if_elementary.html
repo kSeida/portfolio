@@ -9,18 +9,15 @@
 		const p=str=>{
 			document.write("<p>"+str+"</p>");
 		}
-		
 		var rand1=Math.floor(3*Math.random());
 		var rand2=Math.floor(3*Math.random());
 		p("rand1: "+rand1);
 		p("rand2: "+rand2);
 		if(rand1>rand2){
 			p("rand1のほうが大きい値です");
-		}
-		else if(rand1<rand2){
+		} else if(rand1<rand2){
 			p("rand2のほうが大きい値です");
-		}
-		else{
+		} else{
 			p("2つは同じ値です");
 		}
 	</script>
