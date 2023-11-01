@@ -47,11 +47,11 @@
 				//Quagga.ImageWrapper
 			}
 			if(result.box===undefined) return
-			console.log(checker)
+			//console.log(checker)
 			Quagga.ImageDebug.drawPath(result.box,{x:0,y:1},Quagga.canvas.ctx.overlay,{color:"#f00",lineWidth:1})
 			//Quagga.ImageWrapper
 			if(checker!==(checker=result.codeResult.code,checker)) return counter=0,undefined
-			if(++counter!==2) return
+			if(++counter!==2) return/**/ counter=0,undefined
 			if(!/^97[89]\d{10}$/.test(result.codeResult.code)) return
 			Quagga.pause()
 			document.querySelector("video").pause()
