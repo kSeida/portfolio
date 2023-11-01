@@ -21,7 +21,7 @@
 	#description{
 		font-weight:bold;padding:12px 16px;position:absolute;top:0
 	}
-	br{
+	br,video{
 		display:none
 	}
 	canvas{
@@ -42,7 +42,7 @@
 	})
 	Quagga.onProcessed(async result=>{
 		try{
-			Quagga.canvas.ctx.overlay.drawImage(0,0,document.querySelector("video").width,document.querySelector("video").height)
+			Quagga.canvas.ctx.overlay.drawImage(document.querySelector("video"),0,0,Quagga.canvas.dom.overlay.width,Quagga.canvas.dom.overlay.height,0,0,Quagga.canvas.dom.overlay.width,Quagga.canvas.dom.overlay.height)
 			//Quagga.canvas.ctx.overlay.clearRect(0,0,Quagga.canvas.dom.overlay.width,Quagga.canvas.dom.overlay.height)
 			if(result===undefined) return
 			for(const box of result.boxes){
