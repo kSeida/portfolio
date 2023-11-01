@@ -35,7 +35,7 @@
 <div id=description>裏表紙のISBNバーコードにカメラを向けてください。（ISBNは、97 で始まる13桁）</div>
 <script src="https://cdn.jsdelivr.net/npm/quagga"></script>
 <script>
-	let checker
+	//let checker
 	Quagga.init({
 		inputStream:{type:"LiveStream",target:document.body},
 		constraints:{facingMode:"environment"},
@@ -54,7 +54,7 @@
 		if(result.box===undefined) return
 		Quagga.ImageDebug.drawPath(result.box,{x:0,y:1},Quagga.canvas.ctx.overlay,{color:"#f00",lineWidth:2})
 		//Quagga.ImageWrapper
-		if(checker!==(checker=result.codeResult.code,checker)) return
+		//if(checker!==(checker=result.codeResult.code,checker)) return
 		if(!/^97[89]\d{10}$/.test(result.codeResult.code)) return
 		Quagga.pause()
 		document.querySelector("video").pause()
@@ -74,7 +74,7 @@
 			open(formUrl+result.codeResult.code)
 			*/
 		}
-		checker=undefined
+		//checker=undefined
 		description.innerText="裏表紙のISBNバーコードにカメラを向けてください。（ISBNは、97 で始まる13桁）"
 		document.querySelector("video").play()
 		Quagga.start()
