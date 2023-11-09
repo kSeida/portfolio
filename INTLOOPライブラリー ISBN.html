@@ -54,7 +54,7 @@
 				const response=await fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:"+codeResult.code)
 				const{items}=await response.json()
 				if(confirm("図書の内容は以下ですか?\n\n"+Object.entries({
-					...items?.[0]&&{題名:items[0].volumeInfo.title,著者:items[0].volumeInfo.authors.join("、")},ISBN:codeResult.code
+					...items?.length&&{題名:items[0].volumeInfo.title,著者:items[0].volumeInfo.authors.join("、")},ISBN:codeResult.code
 				}).map(entry=>entry.join(": ")).join("\n"))){
 					location="https://docs.google.com/forms/d/e/1FAIpQLSdu_2j4p3ubst0eoFRZaHoSZEbFB2SJkvzbSlxkh6qJXCMcFw/viewform?usp=pp_url&entry.772749012="+codeResult.code.replace(/.$/,"")+"&entry.1369649637="+new Date().toLocaleString("ja",{
 year:"numeric",month:"2-digit",day:"2-digit"}).replaceAll("/","-")
