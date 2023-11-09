@@ -40,7 +40,7 @@
 	},error=>{
 		error?console.error(error):Quagga.start()
 	})
-	let handler=Quagga.onProcessed(async function(results){
+	Quagga.onProcessed(async function(results){
 		Quagga.canvas.ctx.overlay.clearRect(0,0,Quagga.canvas.dom.overlay.width,Quagga.canvas.dom.overlay.height)
 		if(results===undefined) return
 		for(const{box,codeResult}of results){
@@ -48,7 +48,7 @@
 				Quagga.ImageDebug.drawPath(box,{x:0,y:1},Quagga.canvas.ctx.overlay,{color:codeResult?"#f00":"#00f",lineWidth:1})
 				if(codeResult===undefined) continue
 				if(!/^97[89]\d{10}$/.test(codeResult.code)) continue
-				Quagga.offProcessed(handler)//Quagga.pause()
+				Quagga.offProcessed(arguments.callee)//Quagga.pause()
 				document.querySelector("video").pause()
 				const response=await fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:"+codeResult.code)
 				const{items}=await response.json()
@@ -62,9 +62,8 @@ year:"numeric",month:"2-digit",day:"2-digit"}).replaceAll("/","-")
 				description.innerText+="\n"+error
 			} finally{
 				document.querySelector("video").play()
-				handler=Quagga.onProcessed(arguments.callee)//Quagga.start()
+				Quagga.onProcessed(arguments.callee)//Quagga.start()
 			}
 		}
 	})
-	console.log(handler)
 </script>
