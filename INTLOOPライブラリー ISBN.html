@@ -25,7 +25,7 @@
 		display:none
 	}
 	canvas,video{
-		display:block;height:100%;width:100%
+		display:block;height:100%;width:100%;transform:scalex(-1)
 	}
 	canvas{
 		object-fit:contain;position:absolute;top:0
@@ -36,8 +36,7 @@
 <script src="https://cdn.jsdelivr.net/npm/quagga"></script>
 <script>
 	Quagga.init({
-		constraints:{facingMode:"environment"},decoder:{multiple:true,readers:["ean_reader"]},
-		inputStream:{target:document.body}
+		constraints:{/*facingMode:"environment"*/},decoder:{multiple:true,readers:["ean_reader"]},inputStream:{target:document.body}
 	},error=>{
 		error?console.error(error):Quagga.start()
 	})
