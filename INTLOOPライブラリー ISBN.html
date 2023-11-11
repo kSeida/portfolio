@@ -60,33 +60,33 @@
 			Quagga.decodeSingle(constraits,resolve)
 		})
 		drawingBuffer.getContext("2d").clearRect(0,0,1.25*video.videoWidth,1.25*video.videoHeight)
-		if(results!==undefined){
-			for(const{box,codeResult}of results){
-				drawingBuffer.getContext("2d").beginPath()
-				drawingBuffer.getContext("2d").moveTo(...box[0])
-				drawingBuffer.getContext("2d").lineTo(...box[1])
-				drawingBuffer.getContext("2d").lineTo(...box[2])
-				drawingBuffer.getContext("2d").lineTo(...box[3])
-				drawingBuffer.getContext("2d").closePath()
-				drawingBuffer.getContext("2d").strokeStyle=codeResult?"#f00":"#00f"
-				drawingBuffer.getContext("2d").stroke()
-				if(codeResult===undefined) continue
-				if(!/^97[89]\d{10}$/.test(codeResult.code)) continue
-				video.pause()
-				const response=await fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:"+codeResult.code)
-				const{items}=await response.json()
-				if(!confirm("図書の内容は以下ですか?\n\n"+Object.entries({
-					...items?.[0]?.volumeInfo?.title&&{題名:items[0].volumeInfo.title},
-					...items?.[0]?.volumeInfo?.authors&&{著者:items[0].volumeInfo.authors.join("、")},
-					ISBN:codeResult.code
-				}).map(entry=>entry.join(": ")).join("\n"))){
-					video.play()
-				} else{
-					const dateString=new Date().toLocaleString("ja",{year:"numeric",month:"2-digit",day:"2-digit"}).replaceAll("/","-")
-					const queryStrings={usp:"pp_url","entry.772749012":codeResult.code.replaceAll(/.$/g,""),"entry.1369649637":dateString}
-					location="https://docs.google.com/forms/d/e/1FAIpQLSdu_2j4p3ubst0eoFRZaHoSZEbFB2SJkvzbSlxkh6qJXCMcFw/viewform?"+Object.entries(queryStrings).map(entry=>entry.join("=")).join("&")
-					return
-				}
+		if(results!==undefined) return void setTimeout($)
+
+		for(const{box,codeResult}of results){
+			drawingBuffer.getContext("2d").beginPath()
+			drawingBuffer.getContext("2d").moveTo(...box[0])
+			drawingBuffer.getContext("2d").lineTo(...box[1])
+			drawingBuffer.getContext("2d").lineTo(...box[2])
+			drawingBuffer.getContext("2d").lineTo(...box[3])
+			drawingBuffer.getContext("2d").closePath()
+			drawingBuffer.getContext("2d").strokeStyle=codeResult?"#f00":"#00f"
+			drawingBuffer.getContext("2d").stroke()
+			if(codeResult===undefined) continue
+			if(!/^97[89]\d{10}$/.test(codeResult.code)) continue
+			video.pause()
+			const response=await fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:"+codeResult.code)
+			const{items}=await response.json()
+			if(!confirm("図書の内容は以下ですか?\n\n"+Object.entries({
+				...items?.[0]?.volumeInfo?.title&&{題名:items[0].volumeInfo.title},
+				...items?.[0]?.volumeInfo?.authors&&{著者:items[0].volumeInfo.authors.join("、")},
+				ISBN:codeResult.code
+			}).map(entry=>entry.join(": ")).join("\n"))){
+				video.play()
+			} else{
+				const dateString=new Date().toLocaleString("ja",{year:"numeric",month:"2-digit",day:"2-digit"}).replaceAll("/","-")
+				const queryStrings={usp:"pp_url","entry.772749012":codeResult.code.replaceAll(/.$/g,""),"entry.1369649637":dateString}
+				location="https://docs.google.com/forms/d/e/1FAIpQLSdu_2j4p3ubst0eoFRZaHoSZEbFB2SJkvzbSlxkh6qJXCMcFw/viewform?"+Object.entries(queryStrings).map(entry=>entry.join("=")).join("&")
+				return
 			}
 		}
 		setTimeout($)
