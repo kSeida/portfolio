@@ -92,7 +92,9 @@
 				location=formUrl
 			}
 
-			await new Promise(resolve=>setTimeout(resolve,1e3))
+			await new Promise(function $(resolve){
+				video.readyState==4?resolve():setTimeout($,undefined,resolve)
+			})
 			await video.play()
 		}
 		setTimeout($)
