@@ -51,14 +51,13 @@
 	drawingBuffer.width=1.25*video.videoWidth
 	drawingBuffer.height=1.25*video.videoHeight
 
-	video.play()
-
+	const constraits={decoder:{multiple:true,readers:["ean_reader"]},locator:{halfSample:true}}
 	const isIsbn13=code=>{
 		if(!/^97[89]\d{10}$/.test(code)) return false
 		return code.slice(-1)==9-[...code.slice(0,-1)].reduce((r,v,i)=>i%2?r+3*v:r+ +v,-1)%10
 	}
+	video.play()
 
-	const constraits={decoder:{multiple:true,readers:["ean_reader"]},locator:{halfSample:true}}
 	await async function $(){
 		canvas.getContext("2d").drawImage(video,0,0)
 		const results=await new Promise(resolve=>{
