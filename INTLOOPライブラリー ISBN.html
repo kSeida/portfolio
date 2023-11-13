@@ -43,7 +43,7 @@
 	video.srcObject=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}})
 
 	await new Promise(function $(resolve){
-		video.videoWidth?resolve():setTimeout($,undefined,resolve)
+		video.videoWidth*video.videoHeight?resolve():setTimeout($,undefined,resolve)
 	})
 	const canvas=document.createElement("canvas")
 	canvas.width=video.videoWidth
