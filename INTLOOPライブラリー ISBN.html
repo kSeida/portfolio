@@ -45,11 +45,11 @@
 	await new Promise(function $(resolve){
 		video.videoWidth*video.videoHeight?resolve():setTimeout($,undefined,resolve)
 	})
+	drawingBuffer.width=1.25*video.videoWidth
+	drawingBuffer.height=1.25*video.videoHeight
 	const canvas=document.createElement("canvas")
 	canvas.width=video.videoWidth
 	canvas.height=video.videoHeight
-	drawingBuffer.width=1.25*video.videoWidth
-	drawingBuffer.height=1.25*video.videoHeight
 
 	const constraits={decoder:{multiple:true,readers:["ean_reader"]},locator:{halfSample:true}}
 	const reducer=(result,value,index)=>index%2?result+3*value:result+ +value
