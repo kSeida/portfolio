@@ -54,8 +54,8 @@
 	const constraits={decoder:{multiple:true,readers:["ean_reader"]},locator:{halfSample:true}}
 	const reducer=(result,value,index)=>index%2?result+3*value:result+ +value
 	const isbn13Tester=/^97[89]\d{10}$/
-	video.play()
 
+	await video.play()
 	await async function $(){
 		canvas.getContext("2d").drawImage(video,0,0)
 		const results=await new Promise(resolve=>{
@@ -86,18 +86,13 @@
 				if(title!==undefined) bookInfo.unshift("題名: "+title)
 				if(!confirm("図書の内容は以下ですか?\n\n"+bookInfo.join("\n"))) continue
 				const formUrl=new URL("https://docs.google.com")
-				description.innerText+="\nOK 1"
 				formUrl.pathname="forms/d/e/1FAIpQLSdu_2j4p3ubst0eoFRZaHoSZEbFB2SJkvzbSlxkh6qJXCMcFw/viewform"
 				formUrl.searchParams.append("entry.772749012",codeResult.code.slice(0,-1))
 				formUrl.searchParams.append("entry.1369649637",new Date().toLocaleDateString("sv"))
 				location=formUrl
 			}
-			description.innerText+="\nOK 2"
-			video.play()
-			description.innerText+="\nOK 3"
+			await video.play()
 		}
-		description.innerText+="\nOK 4"
 		setTimeout($)
-		description.innerText+="\nOK 5"
 	}().catch(alert)
 </script>

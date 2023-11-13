@@ -33,8 +33,7 @@
 			constructorList.append(...Object.getOwnPropertyNames(window).filter(propertyName=>{
 				try{
 					return eval("new "+propertyName);
-				}
-				catch(error){
+				} catch(error){
 					return!/(Illegal|.+ is not a) constructor/.test(error.message);
 				}
 			}).sort().map(propertyName=>Object.assign(document.createElement("li"),{
