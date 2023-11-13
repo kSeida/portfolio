@@ -54,9 +54,9 @@
 	const constraits={decoder:{multiple:true,readers:["ean_reader"]},locator:{halfSample:true}}
 	const reducer=(result,value,index)=>index%2?result+3*value:result+ +value
 	const isbn13Tester=/^97[89]\d{10}$/
+	const play=async()=>await video.play()
 
-	setTimeout(async()=>await video.play())
-	await async function $(){
+	async function $(){
 		canvas.getContext("2d").drawImage(video,0,0)
 		const results=await new Promise(resolve=>{
 			constraits.src=canvas.toDataURL()
@@ -92,8 +92,14 @@
 				location=formUrl
 				return
 			}
-			setTimeout(async()=>await video.play())
+			setTimeout(play)
 		}
 		setTimeout($)
-	}().catch(alert)
+	}
+
+	onpageshow=async()=>{
+		await video.play()
+		await $().catch(alert)
+	}
+	await onpageshow()
 </script>
