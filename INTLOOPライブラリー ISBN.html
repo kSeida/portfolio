@@ -56,7 +56,7 @@
 	const isbn13Tester=/^97[89]\d{10}$/
 	video.play()
 
-	undefined,async function $(){
+	await async function $(){
 		canvas.getContext("2d").drawImage(video,0,0)
 		const results=await new Promise(resolve=>{
 			constraits.src=canvas.toDataURL()
