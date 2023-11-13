@@ -54,8 +54,12 @@
 	const constraits={decoder:{multiple:true,readers:["ean_reader"]},locator:{halfSample:true}}
 	const reducer=(result,value,index)=>index%2?result+3*value:result+ +value
 	const isbn13Tester=/^97[89]\d{10}$/
-	video.play()
 
+	await video.play()
+	//
+	description.innerText+="\nOK"
+	await video.play()
+	//
 	await async function $(){
 		canvas.getContext("2d").drawImage(video,0,0)
 		const results=await new Promise(resolve=>{
@@ -91,7 +95,7 @@
 				formUrl.searchParams.append("entry.1369649637",new Date().toLocaleDateString("sv"))
 				location=formUrl
 			}
-			video.play()
+			await video.play()
 		}
 		setTimeout($)
 	}().catch(alert)
