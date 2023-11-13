@@ -56,7 +56,8 @@
 	const isbn13Tester=/^97[89]\d{10}$/
 	const play=async()=>await video.play()
 
-	async function $(){
+	await video.play()
+	await async function $(){
 		canvas.getContext("2d").drawImage(video,0,0)
 		const results=await new Promise(resolve=>{
 			constraits.src=canvas.toDataURL()
@@ -95,11 +96,9 @@
 			setTimeout(play)
 		}
 		setTimeout($)
-	}
+	}().catch(alert)
 
 	onpageshow=async()=>{
-		await video.play()
-		await $().catch(alert)
+		if(event.persisted) location=""
 	}
-	await onpageshow()
 </script>
