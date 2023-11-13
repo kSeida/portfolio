@@ -91,16 +91,10 @@
 				formUrl.searchParams.append("entry.1369649637",new Date().toLocaleDateString("sv"))
 				location=formUrl
 			}
+
+			await new Promise(resolve=>setTimeout(resolve,1e3))
 			await video.play()
 		}
 		setTimeout($)
 	}().catch(alert)
-
-	onclick=async()=>{
-		try{
-			await video.play()
-		} catch(error){
-			description.innerText+="\n"+error
-		}
-	}
 </script>
