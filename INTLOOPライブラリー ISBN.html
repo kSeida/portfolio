@@ -88,9 +88,8 @@
 				if(!confirm("図書の内容は以下ですか?\n\n"+bookInfo.join("\n"))) continue
 				const formUrl=new URL("https://docs.google.com")
 				formUrl.pathname="forms/d/e/1FAIpQLSdu_2j4p3ubst0eoFRZaHoSZEbFB2SJkvzbSlxkh6qJXCMcFw/viewform"
-				//formUrl.searchParams.append("usp","pp_url")
 				formUrl.searchParams.append("entry.772749012",codeResult.code.replaceAll(/.$/g,""))
-				formUrl.searchParams.append("entry.1369649637",new Date().toLocaleString("sv"))
+				formUrl.searchParams.append("entry.1369649637",new Date().toLocaleDateString("sv"))
 				location=formUrl
 			}
 			video.play()
