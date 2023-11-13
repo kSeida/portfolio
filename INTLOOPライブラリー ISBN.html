@@ -55,7 +55,7 @@
 	const reducer=(result,value,index)=>index%2?result+3*value:result+ +value
 	const isbn13Tester=/^97[89]\d{10}$/
 
-	await video.play()
+	setTimeout(async()=>await video.play())
 	await async function $(){
 		canvas.getContext("2d").drawImage(video,0,0)
 		const results=await new Promise(resolve=>{
@@ -90,11 +90,9 @@
 				formUrl.searchParams.append("entry.772749012",codeResult.code.slice(0,-1))
 				formUrl.searchParams.append("entry.1369649637",new Date().toLocaleDateString("sv"))
 				location=formUrl
+				return
 			}
-
-			setTimeout(()=>video.play())
-			//await new Promise(resolve=>setTimeout(resolve,1e3))
-			//await video.play()
+			setTimeout(async()=>await video.play())
 		}
 		setTimeout($)
 	}().catch(alert)
