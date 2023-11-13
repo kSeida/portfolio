@@ -86,13 +86,18 @@
 				if(title!==undefined) bookInfo.unshift("題名: "+title)
 				if(!confirm("図書の内容は以下ですか?\n\n"+bookInfo.join("\n"))) continue
 				const formUrl=new URL("https://docs.google.com")
+				description.innerText+="\nOK 1"
 				formUrl.pathname="forms/d/e/1FAIpQLSdu_2j4p3ubst0eoFRZaHoSZEbFB2SJkvzbSlxkh6qJXCMcFw/viewform"
 				formUrl.searchParams.append("entry.772749012",codeResult.code.slice(0,-1))
 				formUrl.searchParams.append("entry.1369649637",new Date().toLocaleDateString("sv"))
 				location=formUrl
 			}
+			description.innerText+="\nOK 2"
 			video.play()
+			description.innerText+="\nOK 3"
 		}
+		description.innerText+="\nOK 4"
 		setTimeout($)
+		description.innerText+="\nOK 5"
 	}().catch(alert)
 </script>
