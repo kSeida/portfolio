@@ -52,10 +52,9 @@
 	drawingBuffer.height=1.25*video.videoHeight
 
 	const constraits={decoder:{multiple:true,readers:["ean_reader"]},locator:{halfSample:true}}
-	const isIsbn13=code=>{
-		if(!/^97[89]\d{10}$/.test(code)) return false
-		return code.slice(-1)==9-[...code.slice(0,-1)].reduce((r,v,i)=>i%2?r+3*v:r+ +v,-1)%10
-	}
+	const reducer=(result,value,index)=>index%2?result+3*value:result+ +value
+	const tester=/^97[89]\d{10}$/
+	const isIsbn13=code=>tester.test(code) && code.slice(-1)==9-[...code.slice(0,-1)].reduce(reducer,-1)%10
 	video.play()
 
 	await async function $(){
