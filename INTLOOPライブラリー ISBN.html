@@ -40,59 +40,64 @@
 <script src=https://cdn.jsdelivr.net/npm/quagga>
 </script>
 <script type=module>
-	video.srcObject=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}})
+	try{
+		video.srcObject=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}})
 
-	await new Promise(function $(resolve){
-		video.videoWidth*video.videoHeight?resolve():setTimeout($,undefined,resolve)
-	})
-	drawingBuffer.width=1.25*video.videoWidth
-	drawingBuffer.height=1.25*video.videoHeight
-	const canvas=document.createElement("canvas")
-	canvas.width=video.videoWidth
-	canvas.height=video.videoHeight
-
-	const constraits={decoder:{multiple:true,readers:["ean_reader"]},locator:{halfSample:true}}
-	const reducer=(result,value,index)=>index%2?result+3*value:result+ +value
-	const isbn13Tester=/^97[89]\d{10}$/
-	video.play()
-
-	await async function $(){
-		canvas.getContext("2d").drawImage(video,0,0)
-		const results=await new Promise(resolve=>{
-			constraits.src=canvas.toDataURL()
-			Quagga.decodeSingle(constraits,resolve)
+		await new Promise(function $(resolve){
+			video.videoWidth*video.videoHeight?resolve():setTimeout($,undefined,resolve)
 		})
-		drawingBuffer.getContext("2d").clearRect(0,0,1.25*video.videoWidth,1.25*video.videoHeight)
-		for(const{box,codeResult}of results??""){
-			drawingBuffer.getContext("2d").beginPath()
-			drawingBuffer.getContext("2d").moveTo(...box[0])
-			drawingBuffer.getContext("2d").lineTo(...box[1])
-			drawingBuffer.getContext("2d").lineTo(...box[2])
-			drawingBuffer.getContext("2d").lineTo(...box[3])
-			drawingBuffer.getContext("2d").closePath()
-			drawingBuffer.getContext("2d").strokeStyle=codeResult?"#f00":"#00f"
-			drawingBuffer.getContext("2d").stroke()
-			if(codeResult===undefined) continue
+		drawingBuffer.width=1.25*video.videoWidth
+		drawingBuffer.height=1.25*video.videoHeight
+		const canvas=document.createElement("canvas")
+		canvas.width=video.videoWidth
+		canvas.height=video.videoHeight
 
-			if(!isbn13Tester.test(codeResult.code)) continue
-			if(codeResult.code.slice(-1)!=9-[...codeResult.code.slice(0,-1)].reduce(reducer,-1)%10) continue
+		const constraits={decoder:{multiple:true,readers:["ean_reader"]},locator:{halfSample:true}}
+		const reducer=(result,value,index)=>index%2?result+3*value:result+ +value
+		const isbn13Tester=/^97[89]\d{10}$/
+		video.play()
 
-			video.pause()
-			const response=await fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:"+codeResult.code)
-			const{items}=await response.json()
-			for(const{volumeInfo:{title,authors}}of items??[{volumeInfo:{}}]){
-				const bookInfo=["ISBN: "+codeResult.code]
-				if(authors!==undefined) bookInfo.unshift("著者: "+authors.join("、"))
-				if(title!==undefined) bookInfo.unshift("題名: "+title)
-				if(!confirm("図書の内容は以下ですか?\n\n"+bookInfo.join("\n"))) continue
-				const formUrl=new URL("https://docs.google.com")
-				formUrl.pathname="forms/d/e/1FAIpQLSdu_2j4p3ubst0eoFRZaHoSZEbFB2SJkvzbSlxkh6qJXCMcFw/viewform"
-				formUrl.searchParams.append("entry.772749012",codeResult.code.slice(0,-1))
-				formUrl.searchParams.append("entry.1369649637",new Date().toLocaleDateString("sv"))
-				location=formUrl
+		await async function $(){
+			canvas.getContext("2d").drawImage(video,0,0)
+			const results=await new Promise(resolve=>{
+				constraits.src=canvas.toDataURL()
+				Quagga.decodeSingle(constraits,resolve)
+			})
+			drawingBuffer.getContext("2d").clearRect(0,0,1.25*video.videoWidth,1.25*video.videoHeight)
+			for(const{box,codeResult}of results??""){
+				drawingBuffer.getContext("2d").beginPath()
+				drawingBuffer.getContext("2d").moveTo(...box[0])
+				drawingBuffer.getContext("2d").lineTo(...box[1])
+				drawingBuffer.getContext("2d").lineTo(...box[2])
+				drawingBuffer.getContext("2d").lineTo(...box[3])
+				drawingBuffer.getContext("2d").closePath()
+				drawingBuffer.getContext("2d").strokeStyle=codeResult?"#f00":"#00f"
+				drawingBuffer.getContext("2d").stroke()
+				if(codeResult===undefined) continue
+
+				if(!isbn13Tester.test(codeResult.code)) continue
+				if(codeResult.code.slice(-1)!=9-[...codeResult.code.slice(0,-1)].reduce(reducer,-1)%10) continue
+
+				video.pause()
+				const response=await fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:"+codeResult.code)
+				const{items}=await response.json()
+				for(const{volumeInfo:{title,authors}}of items??[{volumeInfo:{}}]){
+					const bookInfo=["ISBN: "+codeResult.code]
+					if(authors!==undefined) bookInfo.unshift("著者: "+authors.join("、"))
+					if(title!==undefined) bookInfo.unshift("題名: "+title)
+					if(!confirm("図書の内容は以下ですか?\n\n"+bookInfo.join("\n"))) continue
+					const formUrl=new URL("https://docs.google.com")
+					formUrl.pathname="forms/d/e/1FAIpQLSdu_2j4p3ubst0eoFRZaHoSZEbFB2SJkvzbSlxkh6qJXCMcFw/viewform"
+					formUrl.searchParams.append("entry.772749012",codeResult.code.slice(0,-1))
+					formUrl.searchParams.append("entry.1369649637",new Date().toLocaleDateString("sv"))
+					location=formUrl
+				}
+				video.play()
 			}
-			video.play()
-		}
-		setTimeout($)
-	}()
+			setTimeout($)
+		}()
+	} catch(error){
+		alert("お手数ですが、以下のエラーを管理本部 清田にお知らせください。\n\n"+error)
+		location=""
+	}
 </script>
