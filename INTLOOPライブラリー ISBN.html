@@ -56,10 +56,6 @@
 	const isbn13Tester=/^97[89]\d{10}$/
 
 	await video.play()
-	//
-	description.innerText+="\nOK"
-	await video.play()
-	//
 	await async function $(){
 		canvas.getContext("2d").drawImage(video,0,0)
 		const results=await new Promise(resolve=>{
@@ -99,4 +95,12 @@
 		}
 		setTimeout($)
 	}().catch(alert)
+
+	onclick=async()=>{
+		try{
+			await video.play()
+		} catch(error){
+			description.innerText+="\n"+error
+		}
+	}
 </script>
