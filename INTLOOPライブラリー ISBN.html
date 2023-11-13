@@ -63,7 +63,7 @@
 			Quagga.decodeSingle(constraits,resolve)
 		})
 		drawingBuffer.getContext("2d").clearRect(0,0,1.25*video.videoWidth,1.25*video.videoHeight)
-		if(results!==undefined) for(const{box,codeResult}of results){
+		for(const{box,codeResult}of results??""){
 			drawingBuffer.getContext("2d").beginPath()
 			drawingBuffer.getContext("2d").moveTo(...box[0])
 			drawingBuffer.getContext("2d").lineTo(...box[1])
