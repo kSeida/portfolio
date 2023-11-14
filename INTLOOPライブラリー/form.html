@@ -26,17 +26,20 @@
 		font-weight:bold
 	}
 	label:has(input){
-		cursor:pointer;display:inline-block;background:#ddd;margin-top:8px;margin-bottom:8px;padding:8px 16px
+		background:#ddd;cursor:pointer;flex-grow:1;margin-top:8px;margin-bottom:8px;padding:8px 16px;text-align:center
 	}
 	:disabled{
 		opacity:calc(2/3)
+	}
+	#flex{
+		display:flex
 	}
 </style>
 <form id=form>
 	<label>ISBN 上12桁</label>
 	<input id=digits readonly type=number>
 	<label>申請種別</label>
-	<div>
+	<div id=flex>
 		<label><input name=type value=貸出 type=radio>貸出</label>　<label><input name=type value=延長 type=radio>延長</label>　<label><input name=type value=返却 type=radio>返却</label>
 	</div>
 	<label>貸出日</label>
