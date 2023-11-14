@@ -33,7 +33,7 @@
 		opacity:calc(2/3)
 	}
 	#flex{
-		display:flex
+		display:flex;column-gap:16px
 	}
 </style>
 <form id=form>
@@ -41,7 +41,9 @@
 	<input id=digits readonly type=number>
 	<label>申請種別</label>
 	<div id=flex>
-		<label><input name=type value=貸出 type=radio>貸出</label>　<label><input name=type value=延長 type=radio>延長</label>　<label><input name=type value=返却 type=radio>返却</label>
+		<label><input name=type value=貸出 type=radio>貸出</label>
+		<label><input name=type value=延長 type=radio>延長</label>
+		<label><input name=type value=返却 type=radio>返却</label>
 	</div>
 	<label class=貸出>貸出日</label>
 	<input class=貸出 id=date type=date>
