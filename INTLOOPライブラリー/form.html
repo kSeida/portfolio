@@ -50,7 +50,7 @@
 	date.value=new Date().toLocaleDateString("sv")
 
 	oninput=()=>{
-		submit.disabled=!digits.value || !form.type.value || !/\S+/.test(userName.value)
+		submit.disabled=!digits.value || !form.type.value || !/\S+\s+\S+/.test(userName.value)
 	}
 
 	submit.onclick=async()=>{
