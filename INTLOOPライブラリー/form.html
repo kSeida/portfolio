@@ -13,46 +13,62 @@
 		line-height:calc(1em + 16px);margin:unset
 	}
 	body{
-		padding:8px 16px
+		font-family:baseline,arial,yu gothic,sans-serif;font-kerning:none;padding:8px 16px
 	}
-	input{
-		all:unset;background:#ddd;margin-top:8px;margin-bottom:8px;padding:8px 16px;width:calc(100% - 32px)
+	button,input{
+		all:unset
 	}
-	input[type=submit]{
+	button,input,input[type=number]{
+		background:#ddd;margin-top:8px;margin-bottom:8px;padding:8px 16px;width:calc(100% - 32px)
+	}
+	input[type=radio]{
+		display:none
+	}
+	button,label:has(input:checked){
 		background:#000;color:#fff;font-weight:bold;text-align:center
 	}
-	label:not([for]){
+	label:not(:has(input)){
 		font-weight:bold
 	}
+	label:has(input){
+		cursor:pointer;display:inline-block;background:#ddd;margin-top:8px;margin-bottom:8px;padding:8px 16px
+	}
+	:disabled{
+		opacity:.8
+	}
 </style>
-<form>
+<form id=form>
 	<label>ISBN 上12桁</label>
 	<input id=digits readonly type=number>
-	<label>氏名</label>
-	<input id=userName>
 	<label>申請種別</label>
 	<div>
-		<input id=貸出 name=type value=貸出> <label for=貸出>貸出</label>
-		<input id=延長 name=type value=延長> <label for=延長>延長</label>
-		<input id=返却 name=type value=返却> <label for=返却>返却</label>
+		<label><input name=type value=貸出 type=radio>貸出</label
+		>　<label><input name=type value=延長 type=radio>延長</label
+		>　<label><input name=type value=返却 type=radio>返却</label>
 	</div>
 	<label>貸出日</label>
 	<input id=date type=date>
-	<input id=submit type=submit>
+	<label>氏名</label>
+	<input id=userName>
+	<button disabled id=submit>申請</button>
 </form>
 <script type=module>
 	digits.value=new URL(location).searchParams.get("digits")
 	date.value=new Date().toLocaleDateString("sv")
 
-	submit.onclick=()=>{
+	oninput=()=>{
+		submit.disabled=!digits.value || !form.type.value || !/\S+/.test(userName.value)
+	}
+
+	submit.onclick=async()=>{
+		event.preventDefault()
+		submit.disabled=true
 		const url=new URL("https://script.google.com")
 		url.pathname="macros/s/AKfycbx2Iksqz5JihaJKVJakdnP0E6K_15N4bzuEAvXGVaVFmA63BhQVw6pt6VuvZWYzlUWh/exec"
-		const payloadSource={
-			date:new Date().toLocaleDateString("ja"),
-			digits:digits.value,
-			type:event.target.parentElement.type.value,
-			userName:userName.value}
+		const payloadSource={digits:digits.value,type:form.type.value,date:date.value,userName:userName.value}
 		const response=await fetch(url,{method:"post",body:JSON.stringify(payloadSource)})
-		alert(await response.text())
+		const text=await response.text()
+		alert(text)
+		if(/^\S\Sを受け付けました。$/.test(text)) history.back()
 	}
 </script>
