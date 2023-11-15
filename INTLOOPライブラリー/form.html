@@ -38,7 +38,7 @@
 </style>
 <form id=form>
 	<label>ISBN 上12桁</label>
-	<input id=digits readonly type=number>
+	<input id=digits type=number>
 	<label>氏名</label>（姓名間に空白を入れてください）
 	<input id=userName>
 	<label>申請種別</label>
@@ -59,7 +59,7 @@
 		for(const element of document.querySelectorAll(".貸出")){
 			element.style.display=form.type.value=="貸出"?"":"none"
 		}
-		submit.disabled=!digits.value || !form.type.value || !/\S+\s+\S+/.test(userName.value)
+		submit.disabled=!/^97[89]\d{9}$/.test(digits.value) || !form.type.value || !/\S+\s+\S+/.test(userName.value)
 		submit.innerText="申請"
 	}
 	oninput()
