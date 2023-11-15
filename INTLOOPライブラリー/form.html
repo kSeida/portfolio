@@ -49,7 +49,7 @@
 	</div>
 	<label class=貸出>貸出日</label>
 	<input class=貸出 id=date type=date>
-	<button disabled id=submit>申請</button>
+	<button disabled id=submit></button>
 </form>
 <script type=module>
 	digits.value=new URL(location).searchParams.get("digits")
@@ -60,16 +60,19 @@
 			element.style.display=form.type.value=="貸出"?"":"none"
 		}
 		submit.disabled=!digits.value || !form.type.value || !/\S+\s+\S+/.test(userName.value)
+		submit.innerText="申請"
 	}
 	oninput()
 
 	submit.onclick=async()=>{
 		event.preventDefault()
 		submit.disabled=true
+		submit.innerText="申請中"
 		const url=new URL("https://script.google.com")
 		url.pathname="macros/s/AKfycbx2Iksqz5JihaJKVJakdnP0E6K_15N4bzuEAvXGVaVFmA63BhQVw6pt6VuvZWYzlUWh/exec"
 		const payloadSource={digits:digits.value,type:form.type.value,date:date.value,userName:userName.value}
 		const response=await fetch(url,{method:"post",body:JSON.stringify(payloadSource)})
+		submit.innerText="申請済"
 		alert(await response.text())
 	}
 </script>
