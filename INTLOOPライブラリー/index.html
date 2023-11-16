@@ -44,8 +44,8 @@
 	canvas.height=video.videoHeight
 
 	const constraits={decoder:{multiple:true,readers:["ean_reader"]},locator:{halfSample:true}}
-	const reducer=(result,value,index)=>index%2?result+3*value:result+ +value
 	const isbn13Tester=/^97[89]\d{10}$/
+	const reducer=(result,value,index)=>index%2?result+3*value:result+ +value
 	const play=async()=>await video.play()
 
 	await video.play()
