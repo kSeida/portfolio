@@ -11,6 +11,9 @@
 	button,input{
 		all:unset;background:#ddd;margin-top:8px;margin-bottom:8px;padding:8px 16px;width:calc(100% - 32px);text-align:center
 	}
+	textarea{
+		all:unset;background:#ddd;margin-top:8px;margin-bottom:8px;padding:8px 16px;width:calc(100% - 32px)
+	}
 	button:not(:disabled){
 		cursor:pointer
 	}
@@ -49,6 +52,9 @@
 	</div>
 	<label class=貸出>貸出日</label>
 	<input class=貸出 id=date type=date>
+	<label class=返却>お薦めコメント</label>
+	<textarea class=返却 id=comment type=date>
+	</textarea>
 	<button disabled id=submit></button>
 </form>
 <script type=module>
@@ -58,6 +64,9 @@
 	oninput=()=>{
 		for(const element of document.querySelectorAll(".貸出")){
 			element.style.display=form.type.value=="貸出"?"":"none"
+		}
+		for(const element of document.querySelectorAll(".返却")){
+			element.style.display=form.type.value=="返却"?"":"none"
 		}
 		submit.disabled=!/^97[89]\d{9}$/.test(digits.value) || !form.type.value || !/\S+\s+\S+/.test(userName.value)
 		submit.innerText="申請"
@@ -70,7 +79,9 @@
 		submit.innerText="申請中"
 		const url=new URL("https://script.google.com")
 		url.pathname="macros/s/AKfycbx2Iksqz5JihaJKVJakdnP0E6K_15N4bzuEAvXGVaVFmA63BhQVw6pt6VuvZWYzlUWh/exec"
-		const payloadSource={digits:digits.value,type:form.type.value,date:date.value,userName:userName.value}
+		const payloadSource={digits:digits.value,userName:userName.value,type:form.type.value}
+		if(form.type.value=="貸出") payloadSource.date=date.value
+		if(form.type.value=="返却") payloadSource.comment=comment.value
 		const response=await fetch(url,{method:"post",body:JSON.stringify(payloadSource)})
 		submit.innerText="申請済"
 		alert(await response.text())
