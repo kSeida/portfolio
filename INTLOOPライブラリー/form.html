@@ -67,7 +67,7 @@
 		if(!tester.test(bookName.value)) return bookName.value="",undefined
 		const response=await fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:"+digits.value+`${9-[...digits.value.slice(0,-1)].reduce(reducer,-1)%10}`)
 		const{items}=await response.json()
-		if(items===undefined) return void bookName.value=""
+		if(items===undefined) return bookName.value="",undefined
 		bookName.value=items[0].volumeInfo.title
 	}
 	digits.oninput()
