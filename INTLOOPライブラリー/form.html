@@ -67,7 +67,7 @@
 		for(const element of document.querySelectorAll(".返却")){
 			element.style.display=form.type.value=="返却"?"":"none"
 		}
-		submit.disabled=!/^97[89]\d{9}$/.test(digits.value) || !form.type.value || !/\S+\s+\S+/.test(userName.value)
+		submit.disabled=!/^97[89]\d{9}$/.test(digits.value) || !form.type.value || !/\S+\s+\S+/.test(userName.value) || /\d+/.test(userName.value)
 		submit.innerText="申請"
 	}
 	oninput()
