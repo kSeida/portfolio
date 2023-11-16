@@ -78,13 +78,6 @@
 				if(authors!==undefined) bookInfo.unshift("著者: "+authors.join("、"))
 				if(title!==undefined) bookInfo.unshift("題名: "+title)
 				if(!confirm("図書の内容は以下ですか?\n\n"+bookInfo.join("\n"))) continue
-				/*
-				const formUrl=new URL("https://docs.google.com")
-				formUrl.pathname="forms/d/e/1FAIpQLSdu_2j4p3ubst0eoFRZaHoSZEbFB2SJkvzbSlxkh6qJXCMcFw/viewform"
-				formUrl.searchParams.append("entry.772749012",codeResult.code.slice(0,-1))
-				formUrl.searchParams.append("entry.1369649637",new Date().toLocaleDateString("sv"))
-				location=formUrl
-				*/
 				location="form.html?digits="+codeResult.code
 				return
 			}
