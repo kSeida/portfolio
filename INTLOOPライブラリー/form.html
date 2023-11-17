@@ -34,9 +34,6 @@
 	:disabled{
 		opacity:calc(2/3)
 	}
-	#flex{
-		display:flex;column-gap:16px
-	}
 </style>
 <title>INTLOOPライブラリー 申請フォーム</title>
 <form id=form>
@@ -47,7 +44,7 @@
 	<label>氏名</label>（姓名間に空白を入れてください）
 	<input id=userName>
 	<label>申請種別</label>
-	<div id=flex>
+	<div style=display:flex;column-gap:16px>
 		<label><input name=type value=貸出 type=radio>貸出</label>
 		<label><input name=type value=延長 type=radio>延長</label>
 		<label><input name=type value=返却 type=radio>返却</label>
