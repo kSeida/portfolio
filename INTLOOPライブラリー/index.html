@@ -75,7 +75,7 @@
 				if(authors!==undefined) bookInfo.unshift("著者: "+authors.join("、"))
 				if(title!==undefined) bookInfo.unshift("題名: "+title)
 				if(!confirm("図書の内容は以下ですか?\n\n"+bookInfo.join("\n"))) continue
-				location="form.html?digits="+codeResult.code
+				location="form.html?digits="+codeResult.code.slice(0,-1)
 				return
 			}
 			setTimeout(play)
