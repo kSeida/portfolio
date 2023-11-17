@@ -64,11 +64,10 @@
 			drawingBuffer.getContext("2d").stroke()
 			if(codeResult===undefined) continue
 
-			video.pause()
 			if(!isbn13Tester.test(codeResult.code)) continue
 			if(codeResult.code.slice(-1)!=9-[...codeResult.code.slice(0,-1)].reduce(reducer,-1)%10) continue
 
-			//video.pause()
+			video.pause()
 			const response=await fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:"+codeResult.code)
 			const{items}=await response.json()
 			for(const{volumeInfo:{title,authors}}of items??[{volumeInfo:{}}]){
@@ -79,9 +78,8 @@
 				location="form.html?digits="+codeResult.code.slice(0,-1)
 				return
 			}
-			//setTimeout(play)
+			setTimeout(play)
 		}
-		setTimeout(play)
 		setTimeout($)
 	}().catch(alert)
 
