@@ -7,3 +7,9 @@
 @font-face{
 	font-family:yu gothic;font-weight:bold;src:local(yu gothic bold)
 }
+*{
+	line-height:calc(1em + 16px);margin:unset
+}
+body{
+	font-family:baseline,arial,yu gothic,sans-serif;font-kerning:none;-webkit-text-size-adjust:none
+}
