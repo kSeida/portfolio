@@ -4,22 +4,13 @@
 	body{
 		margin-left:auto;margin-right:auto;max-width:calc(640px - 32px);padding:8px 16px
 	}
-	button,input,textarea,label:has(input){
-		background:#ddd;margin-top:8px;margin-bottom:8px;padding:8px 16px
-	}
-	button,input,label:has(input){
+	button,input,label:has(input:checked),label:has(input){
 		text-align:center
 	}
 	button,input,textarea{
-		all:unset;width:calc(100% - 32px)
+		all:unset;background:#ddd;margin-top:8px;margin-bottom:8px;padding:8px 16px;width:calc(100% - 32px)
 	}
-	button,label:has(input:checked),label:not(:has(input)){
-		font-weight:bold
-	}
-	button,label:has(input:checked){
-		background:#000;color:#fff
-	}
-	button:not(:disabled),label:has(input){
+	button:not(:disabled){
 		cursor:pointer
 	}
 	input[type=date]{
@@ -28,11 +19,20 @@
 	input[type=radio]{
 		display:none
 	}
+	button,label:has(input:checked){
+		background:#000;color:#fff;font-weight:bold
+	}
+	label:not(:has(input)){
+		font-weight:bold
+	}
 	label:has(input){
-		flex-grow:1
+		background:#ddd;cursor:pointer;flex-grow:1;margin-top:8px;margin-bottom:8px;padding:8px 16px
 	}
 	:disabled{
 		opacity:calc(2/3)
+	}
+	#flex{
+		display:flex;column-gap:16px
 	}
 </style>
 <title>INTLOOPライブラリー 申請フォーム</title>
@@ -44,7 +44,7 @@
 	<label>氏名</label>（姓名間に空白を入れてください）
 	<input id=userName>
 	<label>申請種別</label>
-	<div style=display:flex;column-gap:16px>
+	<div id=flex>
 		<label><input name=type value=貸出 type=radio>貸出</label>
 		<label><input name=type value=延長 type=radio>延長</label>
 		<label><input name=type value=返却 type=radio>返却</label>
