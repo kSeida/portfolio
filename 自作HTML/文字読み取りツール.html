@@ -47,7 +47,7 @@
 		const xxx=await window["pdfjs-dist/build/pdf"].getDocument(fileReader.result).promise
 		console.warn(xxx)
 		const proxy=await xxx.getPage(1)
-		const viewport=proxy.getViewport({scale:(4*pdfSize.value||4)/3})
+		const viewport=proxy.getViewport({scale:4*pdfSize.value/3})
 		source.height=viewport.height
 		source.width=viewport.width
 		await proxy.render({canvasContext:source.getContext("2d"),viewport:viewport}).promise
