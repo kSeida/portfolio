@@ -12,7 +12,9 @@
 <textarea id=text placeholder=テキスト></textarea>
 <button id=readButton>読み上げ</button>
 <script>
-	onbeforeunload=()=>speechSynthesis.cancel()
+	onbeforeunload=()=>{
+		speechSynthesis.cancel()
+	}
 	readButton.onclick=()=>{
 		speechSynthesis.cancel()
 		speechSynthesis.speak(Object.assign(new SpeechSynthesisUtterance(text.value),{
