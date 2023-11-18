@@ -1,32 +1,23 @@
 <meta content=width=device-width name=viewport>
 <style>
 	*{
-		overflow:hidden
-	}
+		overflow:hidden}
 	html,body,div{
-		height:100%
-	}
+		height:100%}
 	body{
-		margin:unset
-	}
+		margin:unset}
 	div{
-		left:0;position:absolute;top:0;transform-style:preserve-3d;width:100%
-	}
+		left:0;position:absolute;top:0;transform-style:preserve-3d;width:100%}
 	div:not(#white){
-		font-size:25vw;text-align:center
-	}
+		font-size:25vw;text-align:center}
 	#northPole,#southPole{
-		background:#aaa
-	}
+		background:#aaa}
 	#makkah{
-		background:#0a0
-	}
+		background:#0a0}
 	#capeCanaveral{
-		background:#0aa
-	}
+		background:#0aa}
 	#white{
-		background:#fff
-	}
+		background:#fff}
 </style>
 <title>聖地コンパス</title>
 <svg id=equator>
@@ -54,8 +45,7 @@
 				makkah.style="transform:scaleZ(-1)rotateY("+(-event.gamma)+"deg)rotateX("+event.beta+"deg)rotateZ("+(-event.webkitCompassHeading)+"deg)translateZ(-1920px)rotateX("+(-position.coords.latitude)+"deg)rotateY("+(39+49/60+34.3/60**2-position.coords.longitude)+"deg)rotateX("+(21+25/60+21/60**2)+"deg)translateZ(1920px)"
 				capeCanaveral.style="transform:scaleZ(-1)rotateY("+(-event.gamma)+"deg)rotateX("+event.beta+"deg)rotateZ("+(-event.webkitCompassHeading)+"deg)translateZ(-1920px)rotateX("+(-position.coords.latitude)+"deg)rotateY("+(-80-36/60-position.coords.longitude)+"deg)rotateX("+(28+24/60)+"deg)translateZ(1920px)"
 			}
-		}
-		catch(error){
+		} catch(error){
 			alert(error)
 		}
 	},error=>alert(error))
