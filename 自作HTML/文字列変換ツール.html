@@ -1,46 +1,35 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<link href="style.css" rel="stylesheet">
-		<meta charset="utf-8">
-		<meta content="width=device-width" name="viewport">
-		<style>
-			html,body{
-				height:calc(100% - 16px);
-			}
-			textarea{
-				height:calc(100%/3 - 56px);
-			}
-		</style>
-		<title>文字列変換ツール</title>
-	</head>
-	<body>
-		<textarea placeholder="変換前の文字列（$に代入）"></textarea>
-		<textarea placeholder="JavaScript（例: $.toUpperCase()）"></textarea>
-		<textarea placeholder="空文字列" readonly style="color:#f00;">値なし</textarea>
-		<button disabled>変換結果をコピー</button>
-		<script>
-			oninput=()=>{
-				try{
-					let event;
-					let $=document.querySelectorAll("textarea")[0].value;
-					if(!document.querySelectorAll("textarea")[1].value) throw"値なし";
-					$=eval(document.querySelectorAll("textarea")[1].value);
-					document.querySelectorAll("textarea")[2].style=typeof $=="string"?"white-space:pre-wrap;":"font-style:italic;";
-					document.querySelectorAll("textarea")[2].value=$;
-					document.querySelectorAll("button")[0].disabled=!$||typeof $!="string";
-				}
-				catch(error){
-					document.querySelectorAll("textarea")[2].style="color:#f00;";
-					document.querySelectorAll("textarea")[2].value=error;
-					document.querySelectorAll("button")[0].disabled=true;
-				}
-				document.querySelectorAll("button")[0].innerText="変換結果をコピー";
-			}
-			document.querySelectorAll("button")[0].onclick=()=>{
-				navigator.clipboard.writeText(document.querySelectorAll("textarea")[2].value);
-				event.target.innerText="コピー済み";
-			}
-		</script>
-	</body>
-</html>
+<link href=style.css rel=stylesheet>
+<meta content=width=device-width name=viewport>
+<style>
+	html,body{height:calc(100% - 16px)}
+	textarea{height:calc(100%/3 - 56px)}
+</style>
+<title>文字列変換ツール</title>
+<textarea placeholder=変換前の文字列（$に代入）/>
+<textarea placeholder=JavaScript式/>
+<textarea placeholder=空文字列 readonly/>
+<button disabled>変換結果をコピー</button>
+<script type=module>
+	oninput=()=>{
+		try{
+			let event
+			let $=document.querySelectorAll("textarea")[0].value
+			if(!document.querySelectorAll("textarea")[1].value) throw"値なし"
+			$=eval(document.querySelectorAll("textarea")[1].value)
+			document.querySelectorAll("textarea")[2].style=typeof $=="string"?"white-space:pre-wrap":"font-style:italic"
+			document.querySelectorAll("textarea")[2].value=$
+			document.querySelectorAll("button")[0].disabled=!$||typeof $!="string"
+		}
+		catch(error){
+			document.querySelectorAll("textarea")[2].style="color:#f00"
+			document.querySelectorAll("textarea")[2].value=error
+			document.querySelectorAll("button")[0].disabled=true
+		}
+		document.querySelectorAll("button")[0].innerText="変換結果をコピー"
+	}
+	oninput()
+	document.querySelectorAll("button")[0].onclick=()=>{
+		navigator.clipboard.writeText(document.querySelectorAll("textarea")[2].value)
+		event.target.innerText="コピー済み"
+	}
+</script>

@@ -1,29 +1,13 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<meta content="width=device-width" name="viewport">
-		<style>
-			html,body,video{
-				height:100%;
-			}
-			body{
-				background:#000;margin:unset;
-			}
-			video{
-				display:block;width:100%;
-			}
-		</style>
-		<title>反転鏡</title>
-	</head>
-	<body>
-		<video id="video" playsinline>
-		</video>
-		<script type="module">
-			video.srcObject=await navigator.mediaDevices.getUserMedia({
-				audio:true,video:true
-			});
-			await video.play();
-		</script>
-	</body>
-</html>
+<meta content=width=device-width name=viewport>
+<style>
+	html,body,video{height:100%}
+	body{background:#000;margin:unset}
+	video{display:block;width:100%}
+</style>
+<title>反転鏡</title>
+<video playsinline/>
+<script type=module>
+	const video=document.querySelector("video")
+	video.srcObject=await navigator.mediaDevices.getUserMedia({audio:true,video:true})
+	await video.play()
+</script>
