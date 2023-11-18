@@ -1,49 +1,41 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<link href="style.css" rel="stylesheet">
-		<meta charset="utf-8">
-		<meta content="width=device-width" name="viewport">
-		<style>
-			html,body{
-				height:calc(100% - 16px);
-			}
-			textarea{
-				height:calc(100% - 152px);
-			}
-		</style>
-		<title>文字起こしツール</title>
-	</head>
-	<body>
-		<textarea id="result" placeholder="結果" readonly></textarea>
-		<button disabled id="copyButton">コピー</button>
-		<button disabled id="saveButton">メモを保存</button>
-		<script>
-			copyButton.onclick=()=>{
-				navigator.clipboard.writeText(result.value);
-				event.target.innerText="コピー済み";
-			}
-			saveButton.onclick=()=>{
-				let date=new Date;
-				Object.assign(document.createElement("a"),{
-					download:date.getMonth()+1+"月"+date.getDate()+"日 "+date.getHours()+"時"+date.getMinutes()+"分 メモ.txt",href:URL.createObjectURL(new Blob([result.value]))
-				}).click();
-			}
-			let previousTexts=[];
-			let currentTexts;
-			Object.assign(new webkitSpeechRecognition,{
-				continuous:true,interimResults:true,lang:"ja",onend:()=>{
-					if(currentTexts) previousTexts.push(...currentTexts);
-					event.target.start();
-				},onresult:event=>{
-					currentTexts=[...event.results].map(result=>result[0].transcript);
-					result.value=[...previousTexts,...currentTexts].map(text=>"　"+text).join("\n");
-					if(!copyButton.disabled) return;
-					copyButton.disabled=false;
-					copyButton.innerText="コピー";
-					saveButton.disabled=false;
-				}
-			}).start();
-		</script>
-	</body>
-</html>
+<link href=style.css rel=stylesheet>
+<meta content=width=device-width name=viewport>
+<style>
+	html,body{
+		height:calc(100% - 16px)
+	}
+	textarea{
+		height:calc(100% - 152px)
+	}
+</style>
+<title>文字起こしツール</title>
+<textarea id=result placeholder=結果 readonly></textarea>
+<button disabled id=copyButton>コピー</button>
+<button disabled id=saveButton>メモを保存</button>
+<script>
+	copyButton.onclick=()=>{
+		navigator.clipboard.writeText(result.value)
+		event.target.innerText="コピー済み"
+	}
+	saveButton.onclick=()=>{
+		let date=new Date
+		Object.assign(document.createElement("a"),{
+			download:date.getMonth()+1+"月"+date.getDate()+"日 "+date.getHours()+"時"+date.getMinutes()+"分 メモ.txt",href:URL.createObjectURL(new Blob([result.value]))
+		}).click()
+	}
+	let previousTexts=[]
+	let currentTexts
+	Object.assign(new webkitSpeechRecognition,{
+		continuous:true,interimResults:true,lang:"ja",onend:()=>{
+			if(currentTexts) previousTexts.push(...currentTexts)
+			event.target.start()
+		},onresult:event=>{
+			currentTexts=[...event.results].map(result=>result[0].transcript)
+			result.value=[...previousTexts,...currentTexts].map(text=>"　"+text).join("\n")
+			if(!copyButton.disabled) return
+			copyButton.disabled=false
+			copyButton.innerText="コピー"
+			saveButton.disabled=false
+		}
+	}).start()
+</script>

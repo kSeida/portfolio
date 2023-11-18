@@ -9,18 +9,22 @@
 <textarea id=text placeholder=テキスト></textarea>
 <button id=saveButton>保存</button>
 <script>
-	let fileName="";
-	selectButton.onclick=()=>Object.assign(document.createElement("input"),{
-		onchange:async()=>{
-			fileName=event.target.files[0].name;
-			text.value=[...new Uint8Array(await event.target.files[0].arrayBuffer())].map($=>String.fromCharCode($+0x4e00)).join("");
-		},type:"file"
-	}).click();
+	let fileName=""
+	selectButton.onclick=async()=>{
+		const inputElement=document.createElement("input")
+		inputElement.type="file"
+		await new Promise(resolve=>{
+			inputElement.onchange=resolve
+			inputElement.click()
+		})
+		fileName=inputElement.files[0].name
+		text.value=[...new Uint8Array(await inputElement.files[0].arrayBuffer())].map($=>String.fromCharCode(0x4e00+$)).join("")
+	}
 	saveButton.onclick=()=>{
-		let newFileName=prompt("ファイル名を入力してください。",fileName);
-		if(!/^[^.].*\..*[^.]$/.test(newFileName.trim())) event.target.onclick();
+		let newFileName=prompt("ファイル名を入力してください。",fileName)
+		if(!/^[^.].*\..*[^.]$/.test(newFileName/*.trim()*/)) event.target.onclick()
 		else if(newFileName) Object.assign(document.createElement("a"),{
 			download:newFileName,href:URL.createObjectURL(new Blob([new Uint8Array([...text.value].map($=>$.charCodeAt()%0x100)).buffer]))
-		}).click();
+		}).click()
 	}
 </script>

@@ -1,44 +1,39 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<link href="style.css" rel="stylesheet">
-		<meta charset="utf-8">
-		<meta content="width=device-width" name="viewport">
-		<style>
-			html,body{
-				height:calc(100% - 16px);
-			}
-			textarea{
-				height:calc(100% - 216px);
-			}
-		</style>
-		<title>どこでもテキストエディター</title>
-	</head>
-	<body>
-		<button id="selectButton">ファイルを選択</button>
-		<textarea id="text" placeholder="テキスト"></textarea>
-		<button id="htmlPreviewButton">HTMLとしてプレビュー</button>
-		<button id="saveButton">保存</button>
-		<script>
-			let fileName="";
-			selectButton.onclick=()=>Object.assign(document.createElement("input"),{
-				onchange:()=>{
-					fileName=event.target.files[0].name;
-					Object.assign(new FileReader,{
-						onload:()=>text.value=event.target.result
-					}).readAsText(event.target.files[0],prompt("読み込まれるファイルの文字コードを入力してください。\nキャンセルされた場合は、UTF-8で読み込みます。","sjis"));
-				},type:"file"
-			}).click();
-			htmlPreviewButton.onclick=()=>open(URL.createObjectURL(new Blob([text.value],{
-				type:"text/html"
-			})));
-			saveButton.onclick=()=>{
-				let newFileName=prompt("ファイル名を入力してください。",fileName);
-				if(!/^[^.].*\..*[^.]$/.test(newFileName.trim())) event.target.onclick();
-				else if(newFileName) Object.assign(document.createElement("a"),{
-					download:newFileName,href:URL.createObjectURL(new Blob([text.value]))
-				}).click();
-			}
-		</script>
-	</body>
-</html>
+<link href=style.css rel=stylesheet>
+<meta content=width=device-width name=viewport>
+<style>
+	html,body{height:calc(100% - 16px)}
+	textarea{height:calc(100% - 216px)}
+</style>
+<title>どこでもテキストエディター</title>
+<button id=selectButton>ファイルを選択</button>
+<textarea id=text placeholder=テキスト></textarea>
+<button id=htmlPreviewButton>HTMLとしてプレビュー</button>
+<button id=saveButton>保存</button>
+<script>
+	let fileName=""
+	selectButton.onclick=async()=>{
+		const inputElement=document.createElement("input")
+		inputElement.type="file"
+		const event=await new Promise(resolve=>{
+			inputElement.onchange=resolve
+			inputElement.click()
+		})
+		fileName=inputElement.files[0].name
+		const fileReader=new FileReader
+		await new Promise(resolve=>{
+			fileReader.onload=resolve
+			fileReader.readAsText(inputElement.files[0],prompt("読み込まれるファイルの文字コードを入力してください。\nキャンセルされた場合は、UTF-8で読み込みます。","sjis"))
+		})
+		text.value=fileReader.result
+	}
+	htmlPreviewButton.onclick=()=>{
+		open(URL.createObjectURL(new Blob([text.value],{type:"text/html"})))
+	}
+	saveButton.onclick=()=>{
+		let newFileName=prompt("ファイル名を入力してください。",fileName)
+		if(!/^[^.].*\..*[^.]$/.test(newFileName/*.trim()*/)) event.target.onclick()
+		else if(newFileName) Object.assign(document.createElement("a"),{
+			download:newFileName,href:URL.createObjectURL(new Blob([text.value]))
+		}).click()
+	}
+</script>
