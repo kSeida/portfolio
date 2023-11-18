@@ -32,24 +32,28 @@
 		source.height=event.target.height
 		source.getContext("2d").drawImage(event.target,0,0)
 	}
-	selectButton.onclick=()=>{
-		Object.assign(document.createElement("input"),{
-			onchange:()=>Object.assign(new FileReader,{
-				onload:event.target.files[0].type=="application/pdf"?async()=>{
-					if(!pdfSize.value) return alert("PDFの倍率が不正です。")
-					let proxy=await(await window["pdfjs-dist/build/pdf"].getDocument(event.target.result).promise).getPage(1)
-					let viewport=proxy.getViewport({
-						scale:(4*pdfSize.value||4)/3
-					})
-					source.height=viewport.height
-					source.width=viewport.width
-					await proxy.render({
-						canvasContext:source.getContext("2d"),viewport:viewport
-					}).promise
-					image.src=source.toDataURL()
-				}:()=>image.src=event.target.result
-			}).readAsDataURL(event.target.files[0]),type:"file"
-		}).click()
+	selectButton.onclick=async()=>{
+		const{target}=await new Promise(resolve=>{
+			const target=document.createElement("input")
+			target.type="file"
+			target.onchange=resolve
+			target.click()
+		})
+		const fileReader=new FileReader
+		fileReader.onload=target.files[0].type=="application/pdf"?async()=>{
+			if(!pdfSize.value) return alert("PDFの倍率が不正です。")
+			let proxy=await(await window["pdfjs-dist/build/pdf"].getDocument(target.result).promise).getPage(1)
+			let viewport=proxy.getViewport({
+				scale:(4*pdfSize.value||4)/3
+			})
+			source.height=viewport.height
+			source.width=viewport.width
+			await proxy.render({
+				canvasContext:source.getContext("2d"),viewport:viewport
+			}).promise
+			image.src=source.toDataURL()
+		}:()=>image.src=target.result
+		fileReader.readAsDataURL(target.files[0])
 	}
 	let x
 	let y
@@ -87,15 +91,14 @@
 		range.width=Math.min(Math.max(x,event.x-rect.x),source.width) - Math.max(0,Math.min(x,event.x-rect.x))
 		range.height=Math.min(Math.max(y,event.y-rect.y),source.width) - Math.max(0,Math.min(y,event.y-rect.y))
 		range.getContext("2d").drawImage(image,x1,y1,range.width,range.height,0,0,range.width,range.height)
-		try{
+		await({
 			result.value=(await Tesseract.recognize(range.toDataURL())).data.text.trimEnd()
 			result.readOnly=!result.value
 			copyButton.disabled=!result.value
 			result.placeholder="読み取り結果"
-		}
-		catch{
+		})().catch(()=>{
 			alert("読み取りに失敗しました。")
-		}
+		})
 		x=undefined
 		y=undefined
 	}
