@@ -33,16 +33,16 @@
 		source.getContext("2d").drawImage(event.target,0,0)
 	}
 	selectButton.onclick=async()=>{
-		const{target}=await new Promise(resolve=>{
-			const target=document.createElement("input")
-			target.type="file"
-			target.onchange=resolve
-			target.click()
+		const inputElement=document.createElement("input")
+		inputElement.type="file"
+		await new Promise(resolve=>{
+			inputElement.onchange=resolve
+			inputElement.click()
 		})
 		const fileReader=new FileReader
-		fileReader.onload=target.files[0].type=="application/pdf"?async()=>{
+		fileReader.onload=inputElement.files[0].type=="application/pdf"?async()=>{
 			if(!pdfSize.value) return alert("PDFの倍率が不正です。")
-			let proxy=await(await window["pdfjs-dist/build/pdf"].getDocument(target.result).promise).getPage(1)
+			let proxy=await(await window["pdfjs-dist/build/pdf"].getDocument(event.target.result).promise).getPage(1)
 			let viewport=proxy.getViewport({
 				scale:(4*pdfSize.value||4)/3
 			})
@@ -52,8 +52,8 @@
 				canvasContext:source.getContext("2d"),viewport:viewport
 			}).promise
 			image.src=source.toDataURL()
-		}:()=>image.src=target.result
-		fileReader.readAsDataURL(target.files[0])
+		}:()=>image.src=event.target.result
+		fileReader.readAsDataURL(inputElement.files[0])
 	}
 	let x
 	let y
