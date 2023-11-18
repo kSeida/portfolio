@@ -10,15 +10,15 @@
 </style>
 <title>コンストラクター一覧</title>
 <h1>new演算子を使用できるコンストラクター:</h1>
-<div/>
+<ul/>
 <script type="module">
 	const test=async propertyName=>eval("new "+propertyName)
 	const catcher=error=>!regExp.test(error.message)
 	const regExp=/(Illegal|.+ is not a) constructor/
-	const propertyNames=Object.getOwnPropertyNames(window)
-	for(const index in propertyNames){
-		if(await test(propertyNames[index]).catch(catcher)) continue
-		delete propertyNames[index]
+	for(const propertyName of Object.getOwnPropertyNames(window).sort()){
+		if(!await test(propertyName).catch(catcher)) continue
+		const element=document.createElement("li")
+		element.innerText=propertyName
+		document.querySelector("ul").append(element)
 	}
-	document.querySelector("div").innerText=propertyNames.sort().join(" | ")
 </script>
