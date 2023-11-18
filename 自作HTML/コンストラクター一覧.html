@@ -29,16 +29,16 @@
 		<h1>new演算子を使用できるコンストラクター:</h1>
 		<ul id="constructorList">
 		</ul>
-		<script>
-			constructorList.append(...Object.getOwnPropertyNames(window).filter(propertyName=>{
-				try{
-					return eval("new "+propertyName);
-				} catch(error){
-					return!/(Illegal|.+ is not a) constructor/.test(error.message);
-				}
-			}).sort().map(propertyName=>Object.assign(document.createElement("li"),{
-				innerText:propertyName
-			})));
+		<script type="module">
+			const test=async propertyName=>eval("new "+propertyName)
+			const catcher=error=>!regExp.test(error.message)
+			const regExp=/(Illegal|.+ is not a) constructor/
+			for(const propertyName of Object.getOwnPropertyNames(window).sort()){
+				if(!await test(propertyName).catch(catcher)) continue
+				const element=document.createElement("li")
+				element.innerText=propertyName
+				constructorList.append(element)
+			}
 		</script>
 	</body>
 </html>
