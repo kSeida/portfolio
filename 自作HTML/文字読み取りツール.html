@@ -46,8 +46,8 @@
 		if(!pdfSize.value) return alert("PDFの倍率が不正です。")
 		const xxx=await window["pdfjs-dist/build/pdf"].getDocument(fileReader.result).promise
 		console.warn(xxx)
-		let proxy=await xxx.getPage(1)
-		let viewport=proxy.getViewport({scale:(4*pdfSize.value||4)/3})
+		const proxy=await xxx.getPage(1)
+		const viewport=proxy.getViewport({scale:(4*pdfSize.value||4)/3})
 		source.height=viewport.height
 		source.width=viewport.width
 		await proxy.render({canvasContext:source.getContext("2d"),viewport:viewport}).promise
@@ -59,7 +59,7 @@
 		if(~event.buttons&0b1) return
 		if(!onselectstart) return
 		getSelection().removeAllRanges()
-		let rect=source.getBoundingClientRect()
+		const rect=source.getBoundingClientRect()
 		source.getContext("2d").drawImage(image,0,0)
 		source.getContext("2d").beginPath()
 		source.getContext("2d").lineWidth=8
