@@ -24,9 +24,7 @@
 </script>
 <script type=module>
 	const image=new Image
-	image.onerror=()=>{
-		alert("このファイルは読み込めません。")
-	}
+	image.onerror=alert/**/
 	image.onload=()=>{
 		source.width=event.target.width
 		source.height=event.target.height
@@ -46,15 +44,13 @@
 		})
 		if(inputElement.files[0].type!="application/pdf") return image.src=fileReader.result,undefined
 		if(!pdfSize.value) return alert("PDFの倍率が不正です。")
-		let proxy=await(await window["pdfjs-dist/build/pdf"].getDocument(fileReader.result).promise).getPage(1)
-		let viewport=proxy.getViewport({
-			scale:(4*pdfSize.value||4)/3
-		})
+		const xxx=await window["pdfjs-dist/build/pdf"].getDocument(fileReader.result).promise
+		console.warn(xxx)
+		let proxy=await xxx.getPage(1)
+		let viewport=proxy.getViewport({scale:(4*pdfSize.value||4)/3})
 		source.height=viewport.height
 		source.width=viewport.width
-		await proxy.render({
-			canvasContext:source.getContext("2d"),viewport:viewport
-		}).promise
+		await proxy.render({canvasContext:source.getContext("2d"),viewport:viewport}).promise
 		image.src=source.toDataURL()
 	}
 	let x
@@ -93,14 +89,14 @@
 		range.width=Math.min(Math.max(x,event.x-rect.x),source.width) - Math.max(0,Math.min(x,event.x-rect.x))
 		range.height=Math.min(Math.max(y,event.y-rect.y),source.width) - Math.max(0,Math.min(y,event.y-rect.y))
 		range.getContext("2d").drawImage(image,x1,y1,range.width,range.height,0,0,range.width,range.height)
-		await({
-			result.value=(await Tesseract.recognize(range.toDataURL())).data.text.trimEnd()
+		await async function(){
+			const xxx=await Tesseract.recognize(range.toDataURL())
+			/**/console.warn(xxx)
+			result.value=xxx.data.text.trimEnd()
 			result.readOnly=!result.value
 			copyButton.disabled=!result.value
 			result.placeholder="読み取り結果"
-		})().catch(()=>{
-			alert("読み取りに失敗しました。")
-		})
+		}().catch(alert)
 		x=undefined
 		y=undefined
 	}
