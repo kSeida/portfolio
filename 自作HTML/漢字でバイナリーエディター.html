@@ -1,38 +1,26 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<link href="style.css" rel="stylesheet">
-		<meta charset="utf-8">
-		<meta content="width=device-width" name="viewport">
-		<style>
-			html,body{
-				height:calc(100% - 16px);
-			}
-			textarea{
-				height:calc(100% - 152px);
-			}
-		</style>
-		<title>漢字でバイナリーエディター</title>
-	</head>
-	<body>
-		<button id="selectButton">ファイルを選択</button>
-		<textarea id="text" placeholder="テキスト"></textarea>
-		<button id="saveButton">保存</button>
-		<script>
-			let fileName="";
-			selectButton.onclick=()=>Object.assign(document.createElement("input"),{
-				onchange:async()=>{
-					fileName=event.target.files[0].name;
-					text.value=[...new Uint8Array(await event.target.files[0].arrayBuffer())].map($=>String.fromCharCode($+0x4e00)).join("");
-				},type:"file"
-			}).click();
-			saveButton.onclick=()=>{
-				let newFileName=prompt("ファイル名を入力してください。",fileName);
-				if(!/^[^.].*\..*[^.]$/.test(newFileName.trim())) event.target.onclick();
-				else if(newFileName) Object.assign(document.createElement("a"),{
-					download:newFileName,href:URL.createObjectURL(new Blob([new Uint8Array([...text.value].map($=>$.charCodeAt()%0x100)).buffer]))
-				}).click();
-			}
-		</script>
-	</body>
-</html>
+<link href=style.css rel=stylesheet>
+<meta content=width=device-width name=viewport>
+<style>
+	html,body{height:calc(100% - 16px)}
+	textarea{height:calc(100% - 152px)}
+</style>
+<title>漢字でバイナリーエディター</title>
+<button id=selectButton>ファイルを選択</button>
+<textarea id=text placeholder=テキスト></textarea>
+<button id=saveButton>保存</button>
+<script>
+	let fileName="";
+	selectButton.onclick=()=>Object.assign(document.createElement("input"),{
+		onchange:async()=>{
+			fileName=event.target.files[0].name;
+			text.value=[...new Uint8Array(await event.target.files[0].arrayBuffer())].map($=>String.fromCharCode($+0x4e00)).join("");
+		},type:"file"
+	}).click();
+	saveButton.onclick=()=>{
+		let newFileName=prompt("ファイル名を入力してください。",fileName);
+		if(!/^[^.].*\..*[^.]$/.test(newFileName.trim())) event.target.onclick();
+		else if(newFileName) Object.assign(document.createElement("a"),{
+			download:newFileName,href:URL.createObjectURL(new Blob([new Uint8Array([...text.value].map($=>$.charCodeAt()%0x100)).buffer]))
+		}).click();
+	}
+</script>
