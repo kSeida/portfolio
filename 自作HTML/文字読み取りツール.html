@@ -40,20 +40,22 @@
 			inputElement.click()
 		})
 		const fileReader=new FileReader
-		fileReader.onload=inputElement.files[0].type=="application/pdf"?async()=>{
-			if(!pdfSize.value) return alert("PDFの倍率が不正です。")
-			let proxy=await(await window["pdfjs-dist/build/pdf"].getDocument(event.target.result).promise).getPage(1)
-			let viewport=proxy.getViewport({
-				scale:(4*pdfSize.value||4)/3
-			})
-			source.height=viewport.height
-			source.width=viewport.width
-			await proxy.render({
-				canvasContext:source.getContext("2d"),viewport:viewport
-			}).promise
-			image.src=source.toDataURL()
-		}:()=>image.src=event.target.result
-		fileReader.readAsDataURL(inputElement.files[0])
+		await new Promise(resolve=>{
+			fileReader.onload=resolve
+			fileReader.readAsDataURL(inputElement.files[0])
+		})
+		if(inputElement.files[0].type!="application/pdf") return image.src=fileReader.result,undefined
+		if(!pdfSize.value) return alert("PDFの倍率が不正です。")
+		let proxy=await(await window["pdfjs-dist/build/pdf"].getDocument(fileReader.result).promise).getPage(1)
+		let viewport=proxy.getViewport({
+			scale:(4*pdfSize.value||4)/3
+		})
+		source.height=viewport.height
+		source.width=viewport.width
+		await proxy.render({
+			canvasContext:source.getContext("2d"),viewport:viewport
+		}).promise
+		image.src=source.toDataURL()
 	}
 	let x
 	let y
