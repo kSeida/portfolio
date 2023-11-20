@@ -10,12 +10,12 @@
 <textarea placeholder=空文字列 readonly></textarea>
 <button disabled>変換結果をコピー</button>
 <script type=module>
-	oninput=()=>{
+	oninput=async()=>{
 		try{
 			let event
 			let $=document.querySelectorAll("textarea")[0].value
 			if(!document.querySelectorAll("textarea")[1].value) throw"値なし"
-			$=eval(document.querySelectorAll("textarea")[1].value)
+			$=await async function(){}.constructor("throw "+document.querySelectorAll("textarea")[1].value)().catch($=>$)
 			document.querySelectorAll("textarea")[2].style=typeof $=="string"?"white-space:pre-wrap":"font-style:italic"
 			document.querySelectorAll("textarea")[2].value=$
 			document.querySelectorAll("button")[0].disabled=!$||typeof $!="string"
@@ -26,7 +26,7 @@
 		}
 		document.querySelectorAll("button")[0].innerText="変換結果をコピー"
 	}
-	oninput()
+	await oninput()
 	document.querySelectorAll("button")[0].onclick=()=>{
 		navigator.clipboard.writeText(document.querySelectorAll("textarea")[2].value)
 		event.target.innerText="コピー済み"
