@@ -19,19 +19,23 @@
 			download:date.getMonth()+1+"月"+date.getDate()+"日 "+date.getHours()+"時"+date.getMinutes()+"分 メモ.txt",href:URL.createObjectURL(new Blob([result.value]))
 		}).click()
 	}
-	let previousTexts=[]
+	const previousTexts=[]
 	let currentTexts
-	Object.assign(new webkitSpeechRecognition,{
-		continuous:true,interimResults:true,lang:"ja",onend:()=>{
-			if(currentTexts) previousTexts.push(...currentTexts)
-			event.target.start()
-		},onresult:event=>{
-			currentTexts=[...event.results].map(result=>result[0].transcript)
-			result.value=[...previousTexts,...currentTexts].map(text=>"　"+text).join("\n")
-			if(!copyButton.disabled) return
-			copyButton.disabled=false
-			copyButton.innerText="コピー"
-			saveButton.disabled=false
-		}
-	}).start()
+	const recognition=new webkitSpeechRecognition
+	recognition.continuous=true
+	recognition.interimResults=true
+	recognition.lang="ja"
+	recognition.onend=()=>{
+		if(currentTexts) previousTexts.push(...currentTexts)
+		event.target.start()
+	}
+	recognition.onresult=event=>{
+		currentTexts=[...event.results].map(result=>result[0].transcript)
+		result.value=[...previousTexts,...currentTexts].map(text=>"　"+text).join("\n")
+		if(!copyButton.disabled) return
+		copyButton.disabled=false
+		copyButton.innerText="コピー"
+		saveButton.disabled=false
+	}
+	recognition.start()
 </script>
