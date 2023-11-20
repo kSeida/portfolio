@@ -17,8 +17,8 @@
 	const regExp=/(Illegal|.+ is not a) constructor/
 	for(const propertyName of Object.getOwnPropertyNames(window).sort()){
 		if(!await test(propertyName).catch(catcher)) continue
-		const element=document.createElement("li")
-		element.innerText=propertyName
-		document.querySelector("ul").append(element)
+		const liElement=document.createElement("li")
+		liElement.innerText=propertyName
+		document.querySelector("ul").append(liElement)
 	}
 </script>
