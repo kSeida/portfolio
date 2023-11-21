@@ -87,8 +87,7 @@
 		await async function(){
 			const{data}=await Tesseract.recognize(range.toDataURL())
 			if(!data.text.trimEnd()) return
-			navigator.clipboard.writeText(data.text.trimEnd())
-			await new Promise(setTimeout)
+			await navigator.clipboard.writeText(data.text.trimEnd())
 			alert(data.text.trimEnd())
 		}().catch(alert)
 	}

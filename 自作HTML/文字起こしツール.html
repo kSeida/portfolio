@@ -9,8 +9,8 @@
 <button disabled id=copyButton>コピー</button>
 <button disabled id=saveButton>メモを保存</button>
 <script>
-	copyButton.onclick=()=>{
-		navigator.clipboard.writeText(result.value)
+	copyButton.onclick=async()=>{
+		await navigator.clipboard.writeText(result.value)
 		event.target.innerText="コピー済み"
 	}
 	saveButton.onclick=()=>{
