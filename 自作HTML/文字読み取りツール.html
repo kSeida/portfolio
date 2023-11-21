@@ -17,7 +17,6 @@
 	</canvas>
 </div>
 <textarea id=result placeholder=読み取り結果（英数字のみ） readonly></textarea>
-<button disabled id=copyButton>結果をコピー</button>
 <script src=https://mozilla.github.io/pdf.js/build/pdf.js>
 </script>
 <script src=https://unpkg.com/tesseract.js@v4.0.3/dist/tesseract.min.js>
@@ -80,36 +79,29 @@
 		result.placeholder="読み取り中..."
 		result.readOnly=true
 		result.value=""
-		copyButton.disabled=true
-		copyButton.innerText="結果をコピー"
 		let rect=source.getBoundingClientRect()
 		let x1=Math.max(0,Math.min(offsetX,event.x-rect.x))
 		let y1=Math.max(0,Math.min(offsetY,event.y-rect.y))
 		let range=document.createElement("canvas")
 		range.width=Math.min(Math.max(offsetX,event.x-rect.x),source.width) - Math.max(0,Math.min(offsetX,event.x-rect.x))
 		range.height=Math.min(Math.max(offsetY,event.y-rect.y),source.width) - Math.max(0,Math.min(offsetY,event.y-rect.y))
+		offsetX=undefined
+		offsetY=undefined
 		range.getContext("2d").drawImage(image,x1,y1,range.width,range.height,0,0,range.width,range.height)
 		await async function(){
 			const{data}=await Tesseract.recognize(range.toDataURL())
 			result.value=data.text.trimEnd()
 			result.readOnly=!result.value
-			copyButton.disabled=!result.value
+			if(result.value){
+				navigator.clipboard.writeText(result.value)
+				alert(result.value)
+			}
 			result.placeholder="読み取り結果"
 		}().catch(alert)
-		offsetX=undefined
-		offsetY=undefined
 	}
 	source.onmousedown=()=>{
 		if(event.button) return
 		onselectstart=()=>false
 		undefined,{offsetX,offsetY}=event
-	}
-	result.oninput=()=>{
-		copyButton.disabled=!event.target.value
-		copyButton.innerText="結果をコピー"
-	}
-	copyButton.onclick=()=>{
-		navigator.clipboard.writeText(result.value)
-		event.target.innerText="コピー済み"
 	}
 </script>
