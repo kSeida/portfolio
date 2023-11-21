@@ -8,7 +8,7 @@
 <textarea id=result placeholder=結果 readonly></textarea>
 <button disabled id=copyButton>コピー</button>
 <button disabled id=saveButton>メモを保存</button>
-<script>
+<script type=module>
 	copyButton.onclick=async()=>{
 		await navigator.clipboard.writeText(result.value)
 		event.target.innerText="コピー済み"
