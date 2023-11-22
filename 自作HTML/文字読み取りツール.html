@@ -75,7 +75,19 @@
 		if(event.offsetX==offsetX) return
 		if(event.offsetY==offsetY) return
 		onselectstart=null
-		let{x,y}=source.getBoundingClientRect()
+		const{x,y}=source.getBoundingClientRect()
+
+		source.getContext("2d").drawImage(image,0,0)
+		source.getContext("2d").beginPath()
+		source.getContext("2d").lineWidth=8
+		source.getContext("2d").moveTo(offsetX-4*Math.sign(event.x-x-offsetX),offsetY-4*Math.sign(event.y-y-offsetY))
+		source.getContext("2d").lineTo(event.x-x+4*Math.sign(event.x-x-offsetX),offsetY-4*Math.sign(event.y-y-offsetY))
+		source.getContext("2d").lineTo(event.x-x+4*Math.sign(event.x-x-offsetX),event.y-y+4*Math.sign(event.y-y-offsetY))
+		source.getContext("2d").lineTo(offsetX-4*Math.sign(event.x-x-offsetX),event.y-y+4*Math.sign(event.y-y-offsetY))
+		source.getContext("2d").closePath()
+		source.getContext("2d").strokeStyle="#f00a"
+		source.getContext("2d").stroke()
+
 		let x1=Math.max(0,Math.min(offsetX,event.x-x))
 		let y1=Math.max(0,Math.min(offsetY,event.y-y))
 		let range=document.createElement("canvas")
