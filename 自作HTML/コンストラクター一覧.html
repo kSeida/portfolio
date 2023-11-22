@@ -13,7 +13,7 @@
 <ul></ul>
 <script type=module>
 	const test=async propertyName=>eval("new "+propertyName)
-	const catcher=error=>!regExp.test(error.message)
+	const catcher=({message})=>!regExp.test(message)
 	const regExp=/(Illegal|.+ is not a) constructor/
 	for(const propertyName of Object.getOwnPropertyNames(window).sort()){
 		if(!await test(propertyName).catch(catcher)) continue
