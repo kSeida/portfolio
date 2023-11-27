@@ -14,10 +14,10 @@
 		event.target.innerText="コピー済み"
 	}
 	saveButton.onclick=()=>{
-		let date=new Date
-		Object.assign(document.createElement("a"),{
-			download:date.getMonth()+1+"月"+date.getDate()+"日 "+date.getHours()+"時"+date.getMinutes()+"分 メモ.txt",href:URL.createObjectURL(new Blob([result.value]))
-		}).click()
+		const anchorElement=document.createElement("a")
+		anchorElement.download=new Date().toLocaleString("sv").replaceAll(/^\d\d|-|:|\d\d$/g,"")+" メモ.txt"
+		anchorElement.href=URL.createObjectURL(new Blob([result.value]))
+		anchorElement.click()
 	}
 	const previousTexts=[]
 	let currentTexts

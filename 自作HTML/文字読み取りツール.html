@@ -97,10 +97,10 @@
 		offsetY=undefined
 		range.getContext("2d").drawImage(image,x1,y1,range.width,range.height,0,0,range.width,range.height)
 		await async function(){
-			const{data}=await Tesseract.recognize(range.toDataURL())
-			if(!data.text.trimEnd()) return
-			await navigator.clipboard.writeText(data.text.trimEnd())
-			alert(data.text.trimEnd())
+			const{data:{text}}=await Tesseract.recognize(range.toDataURL())
+			if(!text.trimEnd()) return
+			await navigator.clipboard.writeText(text.trimEnd())
+			alert(text.trimEnd())
 		}().catch(alert)
 	}
 	source.onmousedown=()=>{
