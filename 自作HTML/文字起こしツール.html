@@ -19,19 +19,19 @@
 		anchorElement.href=URL.createObjectURL(new Blob([result.value]))
 		anchorElement.click()
 	}
-	const previousTexts=[]
-	let currentTexts
+	const texts/*previousTexts*/=[""]
+	//let currentTexts
 	const recognition=new webkitSpeechRecognition
 	recognition.continuous=true
 	recognition.interimResults=true
 	recognition.lang="ja"
 	recognition.onend=()=>{
-		if(currentTexts) previousTexts.push(...currentTexts)
+		/*if(currentTexts) */texts/*previousTexts*/.push(""/*...currentTexts*/)
 		event.target.start()
 	}
 	recognition.onresult=event=>{
-		currentTexts=[...event.results].map(([{transcript}])=>transcript)
-		result.value=[...previousTexts,...currentTexts].map(text=>"　"+text).join("\n")
+		texts[texts.length-1]/*currentTexts*/=[...event.results].map(([{transcript}])=>transcript).join("")
+		result.value=texts/*[...previousTexts,...currentTexts]*/.map(text=>"　"+text).join("\n")
 		if(!copyButton.disabled) return
 		copyButton.disabled=false
 		copyButton.innerText="コピー"
