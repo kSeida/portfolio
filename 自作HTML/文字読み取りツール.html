@@ -34,8 +34,8 @@
 		if(inputElement.files[0].type!="application/pdf"){
 			image.src=fileReader.result
 			await new Promise((resolve,reject)=>{
-				image.onload=resolve
-				image.onerror=reject
+				image.addEventListener("load",resolve)
+				image.addEventListener("error",reject)
 			}).catch(()=>selectButton.click())
 			source.width=event.target.width
 			source.height=event.target.height
