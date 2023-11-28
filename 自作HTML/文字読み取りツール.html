@@ -17,17 +17,8 @@
 </div>
 <script src=https://mozilla.github.io/pdf.js/build/pdf.js></script>
 <script src=https://unpkg.com/tesseract.js@v4.0.3/dist/tesseract.min.js></script>
-
 <script type=module>
 	const image=new Image
-	image.onerror=()=>{
-		selectButton.click()
-	}
-	image.onload=()=>{
-		source.width=event.target.width
-		source.height=event.target.height
-		source.getContext("2d").drawImage(event.target,0,0)
-	}
 	selectButton.onclick=async()=>{
 		const inputElement=document.createElement("input")
 		inputElement.type="file"
@@ -42,6 +33,13 @@
 		})
 		if(inputElement.files[0].type!="application/pdf"){
 			image.src=fileReader.result
+			await new Promise((resolve,reject)=>{
+				image.addEventListener("load",resolve)
+				image.addEventListener("error",reject)
+			}).catch(()=>selectButton.click())
+			source.width=event.target.width
+			source.height=event.target.height
+			source.getContext("2d").drawImage(event.target,0,0)
 			return
 		}
 
