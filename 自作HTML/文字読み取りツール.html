@@ -18,24 +18,24 @@
 <script src=https://mozilla.github.io/pdf.js/build/pdf.js></script>
 <script src=https://unpkg.com/tesseract.js@v4.0.3/dist/tesseract.min.js></script>
 <script type=module>
-	const image=new Image
 	selectButton.onclick=async()=>{
 		const inputElement=document.createElement("input")
 		inputElement.type="file"
+		inputElement.click()
 		await new Promise(resolve=>{
 			inputElement.onchange=resolve
-			inputElement.click()
 		})
 		const fileReader=new FileReader
+		fileReader.readAsDataURL(inputElement.files[0])
 		await new Promise(resolve=>{
 			fileReader.onload=resolve
-			fileReader.readAsDataURL(inputElement.files[0])
 		})
 		if(inputElement.files[0].type!="application/pdf"){
+			const image=new Image
 			image.src=fileReader.result
 			await new Promise((resolve,reject)=>{
-				image.addEventListener("load",resolve)
-				image.addEventListener("error",reject)
+				image.onload=resolve
+				image.onerror=reject
 			}).catch(()=>selectButton.click())
 			source.width=event.target.width
 			source.height=event.target.height
