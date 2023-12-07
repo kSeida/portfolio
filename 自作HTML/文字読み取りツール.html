@@ -2,8 +2,8 @@
 <meta content=width=device-width name=viewport>
 <style>
 	html,body{height:calc(100% - 16px)}
-	div{background:#333;margin-bottom:16px;margin-top:16px;min-height:1em;overflow:scroll;padding:16px}
-	div:has(>#source){height:calc(100% - 160px)}
+	div{background:#333;margin-bottom:16px;margin-top:16px;min-height:1em;overflow:scroll}
+	div:has(>#source){height:calc(100% - 128px)}
 	canvas{display:block;margin-right:auto}
 	#source{cursor:crosshair;margin-left:auto}
 	#pdfSize::placeholder{color:#f00}
@@ -44,10 +44,10 @@
 		}
 
 		if(!pdfSize.value) return alert("PDFの倍率が不正です。")
-		const yyy=window["pdfjs-dist/build/pdf"].getDocument(fileReader.result)
-		const xxx=await yyy.promise
-		console.warn(yyy,xxx)
-		const proxy=await xxx.getPage(1)
+		const xxx=window["pdfjs-dist/build/pdf"].getDocument(fileReader.result)
+		const yyy=await xxx.promise
+		console.warn(xxx,yyy)
+		const proxy=await yyy.getPage(1)
 		const viewport=proxy.getViewport({scale:4*pdfSize.value/3})
 		source.height=viewport.height
 		source.width=viewport.width
@@ -65,7 +65,7 @@
 		if(event.button) return
 		onselectstart=()=>false
 		source.getContext("2d").lineWidth=2
-		do{
+		while(true){
 			await new Promise(resolver)
 			source.getContext("2d").drawImage(image,0,0)
 			const{x,y}=source.getBoundingClientRect()
@@ -96,6 +96,6 @@
 			await navigator.clipboard.writeText(text.trimEnd())
 			alert(text.trimEnd())
 			break
-		} while(true)
+		}
 	}
 </script>
