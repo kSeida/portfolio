@@ -97,17 +97,7 @@
 			try{
 				await navigator.clipboard.writeText(text.trimEnd())
 			} catch{
-				source.getContext("2d").beginPath()
-				source.getContext("2d").moveTo(origX,origY)
-				source.getContext("2d").lineTo(destX,origY)
-				source.getContext("2d").lineTo(destX,destY)
-				source.getContext("2d").lineTo(origX,destY)
-				source.getContext("2d").closePath()
-				source.getContext("2d").strokeStyle="#f00"
-				source.getContext("2d").stroke()
-				await new Promise(resolve=>{
-					addEventListener("focus",resolve)
-				})
+				alert("OKを押してください。")
 				await navigator.clipboard.writeText(text.trimEnd())
 			}
 			source.getContext("2d").beginPath()
