@@ -94,7 +94,7 @@
 			range.getContext("2d").drawImage(image,left,top,range.width,range.height,0,0,range.width,range.height)
 			const{data:{text}}=await Tesseract.recognize(range.toDataURL()).catch(alert)
 			try{
-				wait navigator.clipboard.writeText(text.trimEnd())
+				await navigator.clipboard.writeText(text.trimEnd())
 				source.getContext("2d").beginPath()
 				source.getContext("2d").moveTo(origX,origY)
 				source.getContext("2d").lineTo(destX,origY)
