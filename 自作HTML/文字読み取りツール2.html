@@ -1,0 +1,25 @@
+<link href=style.css rel=stylesheet>
+<meta content=width=device-width name=viewport>
+<style>
+	html,body{height:calc(100% - 16px)}
+</style>
+<title>文字読み取りツール</title>
+<button id=selectButton>Open a file</button>
+<script type=module>
+	selectButton.onclick=async()=>{
+		const inputElement=document.createElement("input")
+		inputElement.type="file"
+		inputElement.click()
+		await new Promise(resolve=>{
+			inputElement.addEventListener("change",resolve)
+		})
+		const reader=new FileReader
+		reader.readAsDataURL(inputElement.files[0])
+		await new Promise(resolve=>{
+			reader.addEventListener("load",resolve)
+		})
+		const url="https://script.google.com/macros/s/AKfycbx5qbhRA2DxRZz2086hANrInCWjawGIWSXv2AjLQPoRCaZ0kN2HVTjiiUZbbhKBgoNy/exec"
+		const response=await fetch(url,{method:"post",body:reader.result})
+		console.log(await response.text())
+	}
+</script>
