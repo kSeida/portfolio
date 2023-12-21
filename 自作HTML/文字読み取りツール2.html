@@ -21,7 +21,7 @@
 			reader.addEventListener("load",resolve)
 		})
 		const url="https://script.google.com/macros/s/AKfycbx5qbhRA2DxRZz2086hANrInCWjawGIWSXv2AjLQPoRCaZ0kN2HVTjiiUZbbhKBgoNy/exec"
-		const response=await fetch(url,{method:"post",body:reader.result})
+		const response=await fetch(url,{body:reader.result,method:"post",mode:"no-cors"})
 		result.value=await response.text()
 	}
 </script>
