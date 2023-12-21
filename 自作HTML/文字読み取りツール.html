@@ -80,7 +80,7 @@
 				source.getContext("2d").lineTo(destX,destY)
 				source.getContext("2d").lineTo(origX,destY)
 				source.getContext("2d").closePath()
-				source.getContext("2d").strokeStyle=event.buttons&0b1?"#00f":"#fa0"
+				source.getContext("2d").strokeStyle=event.buttons&0b1?"#00f":"#0f0"
 				source.getContext("2d").stroke()
 			}
 			if(event.buttons&0b1) continue
@@ -100,14 +100,7 @@
 				alert("OKを押してください。")
 				await navigator.clipboard.writeText(text.trimEnd())
 			}
-			source.getContext("2d").beginPath()
-			source.getContext("2d").moveTo(origX,origY)
-			source.getContext("2d").lineTo(destX,origY)
-			source.getContext("2d").lineTo(destX,destY)
-			source.getContext("2d").lineTo(origX,destY)
-			source.getContext("2d").closePath()
-			source.getContext("2d").strokeStyle="#0f0"
-			source.getContext("2d").stroke()
+			alert(text.trimEnd())
 			break
 		}
 	}
