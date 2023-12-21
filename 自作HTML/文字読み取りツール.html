@@ -108,6 +108,7 @@
 				await new Promise(resolve=>{
 					addEventListener("focus",resolve)
 				})
+				await navigator.clipboard.writeText(text.trimEnd())
 			}
 			source.getContext("2d").beginPath()
 			source.getContext("2d").moveTo(origX,origY)
