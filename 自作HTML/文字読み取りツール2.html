@@ -2,26 +2,109 @@
 <meta content=width=device-width name=viewport>
 <style>
 	html,body{height:calc(100% - 16px)}
-	textarea{height:calc(100% - 88px)}
+	div{background:#333;margin-bottom:16px;margin-top:16px;min-height:1em;overflow:scroll}
+	div:has(>#source){height:calc(100% - 128px)}
+	canvas{display:block;margin-right:auto}
+	#source{cursor:crosshair;margin-left:auto}
+	#pdfSize::placeholder{color:#f00}
 </style>
 <title>文字読み取りツール</title>
-<button id=selectButton>ファイルを選択</button>
-<textarea id=result placeholder=結果></textarea>
+<input id=pdfSize placeholder=PDFの倍率（PDFを読み込むならば必須）>
+<button id=selectButton>画像かPDFを選択</button>
+<div>
+	<canvas height=0 id=source width=0>
+	</canvas>
+</div>
+<script src=https://mozilla.github.io/pdf.js/build/pdf.js></script>
+<script src=https://unpkg.com/tesseract.js/dist/tesseract.min.js></script>
 <script type=module>
+	const image=new Image
 	selectButton.onclick=async()=>{
 		const inputElement=document.createElement("input")
 		inputElement.type="file"
 		inputElement.click()
 		await new Promise(resolve=>{
-			inputElement.addEventListener("change",resolve)
+			inputElement.onchange=resolve
 		})
-		const reader=new FileReader
-		reader.readAsDataURL(inputElement.files[0])
+		const fileReader=new FileReader
+		fileReader.readAsDataURL(inputElement.files[0])
 		await new Promise(resolve=>{
-			reader.addEventListener("load",resolve)
+			fileReader.onload=resolve
 		})
-		const url="https://script.google.com/macros/s/AKfycbx5qbhRA2DxRZz2086hANrInCWjawGIWSXv2AjLQPoRCaZ0kN2HVTjiiUZbbhKBgoNy/exec"
-		const response=await fetch(url,{body:reader.result,method:"post",mode:"no-cors"})
-		result.value=await response.text()
+		if(inputElement.files[0].type!="application/pdf"){
+			image.src=fileReader.result
+			await new Promise((resolve,reject)=>{
+				image.addEventListener("load",resolve)
+				image.addEventListener("error",reject)
+			}).catch(()=>selectButton.click())
+			source.width=event.target.width
+			source.height=event.target.height
+			source.getContext("2d").drawImage(event.target,0,0)
+			return
+		}
+
+		if(!pdfSize.value) return alert("PDFの倍率が不正です。")
+		const xxx=window["pdfjs-dist/build/pdf"].getDocument(fileReader.result)
+		const yyy=await xxx.promise
+		console.warn(xxx,yyy)
+		const proxy=await yyy.getPage(1)
+		const viewport=proxy.getViewport({scale:4*pdfSize.value/3})
+		source.height=viewport.height
+		source.width=viewport.width
+		const zzz=proxy.render({canvasContext:source.getContext("2d"),viewport:viewport})
+		console.warn(zzz)
+		await zzz.promise
+		image.src=source.toDataURL()
+	}
+	const resolver=resolve=>{
+		addEventListener("mousemove",resolve)
+		addEventListener("mouseup",resolve)
+	}
+	const range=document.createElement("canvas")
+	source.onmousedown=async({offsetX,offsetY})=>{
+		if(event.button) return
+		onselectstart=()=>false
+		source.getContext("2d").lineWidth=2
+		while(true){
+			await new Promise(resolver)
+			source.getContext("2d").drawImage(image,0,0)
+			const{x,y}=source.getBoundingClientRect()
+			const origX=Math.min(Math.max(0,offsetX),source.width)
+			const origY=Math.min(Math.max(0,offsetY),source.height)
+			const destX=Math.min(Math.max(0,event.x-x),source.width)
+			const destY=Math.min(Math.max(0,event.y-y),source.height)
+			if(event.buttons&0b1||origX!=destX&&origY!=destY){
+				source.getContext("2d").beginPath()
+				source.getContext("2d").moveTo(origX,origY)
+				source.getContext("2d").lineTo(destX,origY)
+				source.getContext("2d").lineTo(destX,destY)
+				source.getContext("2d").lineTo(origX,destY)
+				source.getContext("2d").closePath()
+				source.getContext("2d").strokeStyle=event.buttons&0b1?"#00f":"#f00"
+				source.getContext("2d").stroke()
+			}
+			if(event.buttons&0b1) continue
+			onselectstart=null
+			if(origX==destX) break
+			if(origY==destY) break
+			range.width=Math.abs(origX-destX)
+			range.height=Math.abs(origY-destY)
+			const left=Math.min(origX,destX)
+			const top=Math.min(origY,destY)
+			range.getContext("2d").drawImage(image,left,top,range.width,range.height,0,0,range.width,range.height)
+
+			const url="https://script.google.com/macros/s/AKfycbx5qbhRA2DxRZz2086hANrInCWjawGIWSXv2AjLQPoRCaZ0kN2HVTjiiUZbbhKBgoNy/exec"
+			const response=await fetch(url,{body:reader.result,method:"post",mode:"no-cors"})
+			const text=await response.text()
+
+			try{
+				await navigator.clipboard.writeText(text)
+			} catch{
+				alert("OKを押してください。")
+				await navigator.clipboard.writeText(text)
+			}
+			alert(text)
+			break
+		}
 	}
 </script>
