@@ -92,21 +92,15 @@
 			const left=Math.min(origX,destX)
 			const top=Math.min(origY,destY)
 			range.getContext("2d").drawImage(image,left,top,range.width,range.height,0,0,range.width,range.height)
-
-			const url="https://script.google.com/macros/s/AKfycbx5qbhRA2DxRZz2086hANrInCWjawGIWSXv2AjLQPoRCaZ0kN2HVTjiiUZbbhKBgoNy/exec"
-			console.log(range.toDataURL())
-			const response=await fetch(url,{body:range.toDataURL(),method:"post"})
-			console.log(response)
-			const text=await response.text()
-			console.log(text)
+			const{data:{text}}=await Tesseract.recognize(range.toDataURL()).catch(alert)
 
 			try{
-				await navigator.clipboard.writeText(text)
+				await navigator.clipboard.writeText(text.trimEnd())
 			} catch{
 				alert("OKを押してください。")
-				await navigator.clipboard.writeText(text)
+				await navigator.clipboard.writeText(text.trimEnd())
 			}
-			alert(text)
+			alert(text.trimEnd())
 			break
 		}
 	}

@@ -16,7 +16,6 @@
 	</canvas>
 </div>
 <script src=https://mozilla.github.io/pdf.js/build/pdf.js></script>
-<script src=https://unpkg.com/tesseract.js/dist/tesseract.min.js></script>
 <script type=module>
 	const image=new Image
 	selectButton.onclick=async()=>{
@@ -92,15 +91,17 @@
 			const left=Math.min(origX,destX)
 			const top=Math.min(origY,destY)
 			range.getContext("2d").drawImage(image,left,top,range.width,range.height,0,0,range.width,range.height)
-			const{data:{text}}=await Tesseract.recognize(range.toDataURL()).catch(alert)
 
+			const url="https://script.google.com/macros/s/AKfycbx5qbhRA2DxRZz2086hANrInCWjawGIWSXv2AjLQPoRCaZ0kN2HVTjiiUZbbhKBgoNy/exec"
+			const response=await fetch(url,{body:range.toDataURL(),method:"post"})
+			const text=await response.text()
 			try{
-				await navigator.clipboard.writeText(text.trimEnd())
+				await navigator.clipboard.writeText(text)
 			} catch{
 				alert("OKを押してください。")
-				await navigator.clipboard.writeText(text.trimEnd())
+				await navigator.clipboard.writeText(text)
 			}
-			alert(text.trimEnd())
+			alert(text)
 			break
 		}
 	}
