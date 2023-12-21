@@ -94,7 +94,7 @@
 			range.getContext("2d").drawImage(image,left,top,range.width,range.height,0,0,range.width,range.height)
 
 			const url="https://script.google.com/macros/s/AKfycbx5qbhRA2DxRZz2086hANrInCWjawGIWSXv2AjLQPoRCaZ0kN2HVTjiiUZbbhKBgoNy/exec"
-			const response=await fetch(url,{body:reader.result,method:"post",mode:"no-cors"})
+			const response=await fetch(url,{body:range.toDataURL(),method:"post",mode:"no-cors"})
 			const text=await response.text()
 
 			try{
