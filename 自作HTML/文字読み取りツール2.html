@@ -95,7 +95,7 @@
 
 			const url="https://script.google.com/macros/s/AKfycbx5qbhRA2DxRZz2086hANrInCWjawGIWSXv2AjLQPoRCaZ0kN2HVTjiiUZbbhKBgoNy/exec"
 			console.log(range.toDataURL())
-			const response=await fetch(url,{body:range.toDataURL(),method:"post",mode:"no-cors"})
+			const response=await fetch(url,{body:range.toDataURL(),method:"post"})
 			console.log(response)
 			const text=await response.text()
 			console.log(text)
