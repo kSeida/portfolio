@@ -93,8 +93,17 @@
 			const top=Math.min(origY,destY)
 			range.getContext("2d").drawImage(image,left,top,range.width,range.height,0,0,range.width,range.height)
 			const{data:{text}}=await Tesseract.recognize(range.toDataURL()).catch(alert)
-			await navigator.clipboard.writeText(text.trimEnd())
-			{
+			try{
+				wait navigator.clipboard.writeText(text.trimEnd())
+				source.getContext("2d").beginPath()
+				source.getContext("2d").moveTo(origX,origY)
+				source.getContext("2d").lineTo(destX,origY)
+				source.getContext("2d").lineTo(destX,destY)
+				source.getContext("2d").lineTo(origX,destY)
+				source.getContext("2d").closePath()
+				source.getContext("2d").strokeStyle="#0f0"
+				source.getContext("2d").stroke()
+			} catch{
 				source.getContext("2d").beginPath()
 				source.getContext("2d").moveTo(origX,origY)
 				source.getContext("2d").lineTo(destX,origY)
