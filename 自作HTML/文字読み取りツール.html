@@ -94,7 +94,14 @@
 			range.getContext("2d").drawImage(image,left,top,range.width,range.height,0,0,range.width,range.height)
 
 			const{data:{text}}=await Tesseract.recognize(range.toDataURL()).catch(alert)
-			while(await navigator.clipboard.writeText(text.trimEnd()).catch(alert)===undefined);
+			while(true){
+				try{
+					await navigator.clipboard.writeText(text.trimEnd())
+					break
+				} catch(error){
+					alert(error)
+				}
+			}
 			alert(text.trimEnd())
 			/*
 			const url="https://script.google.com/macros/s/AKfycbx5qbhRA2DxRZz2086hANrInCWjawGIWSXv2AjLQPoRCaZ0kN2HVTjiiUZbbhKBgoNy/exec"
