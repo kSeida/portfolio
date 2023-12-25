@@ -16,13 +16,13 @@
 		inputElement.type="file"
 		inputElement.click()
 		const event=await new Promise(resolve=>{
-			inputElement.onchange=resolve
+			inputElement.addEventListener("change",resolve)
 		})
 		fileName=inputElement.files[0].name
 		const fileReader=new FileReader
 		fileReader.readAsText(inputElement.files[0],prompt("読み込まれるファイルの文字コードを入力してください。\nキャンセルされた場合は、UTF-8で読み込みます。","sjis"))
 		await new Promise(resolve=>{
-			fileReader.onload=resolve
+			fileReader.addEventListener("load",resolve)
 		})
 		text.value=fileReader.result
 	}

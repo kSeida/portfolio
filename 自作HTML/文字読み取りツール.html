@@ -24,12 +24,12 @@
 		inputElement.type="file"
 		inputElement.click()
 		await new Promise(resolve=>{
-			inputElement.onchange=resolve
+			inputElement.addEventListener("change",resolve)
 		})
 		const fileReader=new FileReader
 		fileReader.readAsDataURL(inputElement.files[0])
 		await new Promise(resolve=>{
-			fileReader.onload=resolve
+			fileReader.addEventListener("load",resolve)
 		})
 		if(inputElement.files[0].type!="application/pdf"){
 			image.src=fileReader.result
@@ -92,30 +92,17 @@
 			const left=Math.min(origX,destX)
 			const top=Math.min(origY,destY)
 			range.getContext("2d").drawImage(image,left,top,range.width,range.height,0,0,range.width,range.height)
-
-			const{data:{text}}=await Tesseract.recognize(range.toDataURL()).catch(alert)
-			while(true){
-				try{
-					await navigator.clipboard.writeText(text.trimEnd())
-					break
-				} catch(error){
-					alert(error)
-				}
-			}
-			alert(text.trimEnd())
-			/*
-			const url="https://script.google.com/macros/s/AKfycbx5qbhRA2DxRZz2086hANrInCWjawGIWSXv2AjLQPoRCaZ0kN2HVTjiiUZbbhKBgoNy/exec"
-			const response=await fetch(url,{body:range.toDataURL(),method:"post"})
-			const text=await response.text()
-			try{
-				await navigator.clipboard.writeText(text)
-			} catch{
-				alert("OKを押してください。")
-				await navigator.clipboard.writeText(text)
-			}
-			alert(text)
-			*/
 			break
 		}
+		const{data:{text}}=await Tesseract.recognize(range.toDataURL()).catch(alert)
+		while(true){
+			try{
+				await navigator.clipboard.writeText(text.trimEnd())
+				break
+			} catch(error){
+				alert(error)
+			}
+		}
+		alert(text.trimEnd())
 	}
 </script>
