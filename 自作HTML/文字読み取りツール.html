@@ -94,11 +94,14 @@
 			break
 		}
 		const{data}=await Tesseract.recognize(range.toDataURL()).catch(alert)
-		while(navigator.clipboard===undefined){
-			alert("OKを押してください。")
-			await new Promise(setTimeout)
+		while(true){
+			try{
+				await navigator.clipboard.writeText(data.text.trimEnd())
+				break
+			} catch(error){
+				alert(error)
+			}
 		}
-		await navigator.clipboard.writeText(data.text.trimEnd())
 		alert(data.text.trimEnd())
 	}
 </script>
