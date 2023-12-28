@@ -16,9 +16,9 @@
 	const catcher=({message})=>!regExp.test(message)
 	const regExp=/(Illegal|\S+ is not a) constructor/
 	for(const propertyName of Object.getOwnPropertyNames(window).sort()){
-		if(!await test(propertyName).catch(catcher)) continue
-		const liElement=document.createElement("li")
-		liElement.innerText=propertyName
-		document.querySelector("ul").append(liElement)
+		if(await test(propertyName).catch(catcher)); else continue
+		const li=document.createElement("li")
+		li.innerText=propertyName
+		document.querySelector("ul").append(li)
 	}
 </script>

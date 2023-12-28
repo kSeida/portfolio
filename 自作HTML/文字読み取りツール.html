@@ -20,18 +20,18 @@
 <script type=module>
 	const image=new Image
 	selectButton.onclick=async()=>{
-		const inputElement=document.createElement("input")
-		inputElement.type="file"
-		inputElement.click()
+		const input=document.createElement("input")
+		input.type="file"
+		input.click()
 		await new Promise(resolve=>{
-			inputElement.addEventListener("change",resolve)
+			input.addEventListener("change",resolve)
 		})
 		const fileReader=new FileReader
-		fileReader.readAsDataURL(inputElement.files[0])
+		fileReader.readAsDataURL(input.files[0])
 		await new Promise(resolve=>{
 			fileReader.addEventListener("load",resolve)
 		})
-		if(inputElement.files[0].type!="application/pdf"){
+		if(input.files[0].type!="application/pdf"){
 			image.src=fileReader.result
 			await new Promise((resolve,reject)=>{
 				image.addEventListener("load",resolve)

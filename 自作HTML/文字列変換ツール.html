@@ -27,8 +27,8 @@
 		document.querySelectorAll("button")[0].innerText="変換結果をコピー"
 	}
 	oninput()
-	document.querySelectorAll("button")[0].onclick=async()=>{
+	document.querySelectorAll("button")[0].onclick=async function(){
 		await navigator.clipboard.writeText(document.querySelectorAll("textarea")[2].value)
-		event.target.innerText="コピー済み"
+		this.innerText="コピー済み"
 	}
 </script>

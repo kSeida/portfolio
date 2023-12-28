@@ -12,15 +12,15 @@
 <script type=module>
 	let fileName=""
 	selectButton.onclick=async()=>{
-		const inputElement=document.createElement("input")
-		inputElement.type="file"
-		inputElement.click()
+		const input=document.createElement("input")
+		input.type="file"
+		input.click()
 		const event=await new Promise(resolve=>{
-			inputElement.addEventListener("change",resolve)
+			input.addEventListener("change",resolve)
 		})
-		fileName=inputElement.files[0].name
+		fileName=input.files[0].name
 		const fileReader=new FileReader
-		fileReader.readAsText(inputElement.files[0],prompt("読み込まれるファイルの文字コードを入力してください。\nキャンセルされた場合は、UTF-8で読み込みます。","sjis"))
+		fileReader.readAsText(input.files[0],prompt("読み込まれるファイルの文字コードを入力してください。\nキャンセルされた場合は、UTF-8で読み込みます。","sjis"))
 		await new Promise(resolve=>{
 			fileReader.addEventListener("load",resolve)
 		})
@@ -29,11 +29,16 @@
 	htmlPreviewButton.onclick=()=>{
 		open(URL.createObjectURL(new Blob([text.value],{type:"text/html"})))
 	}
-	saveButton.onclick=()=>{
+	saveButton.onclick=function onclick(){
 		let newFileName=prompt("ファイル名を入力してください。",fileName)
-		if(!/^[^.].*\..*[^.]$/.test(newFileName/*.trim()*/)) event.target.onclick()
-		else if(newFileName) Object.assign(document.createElement("a"),{
-			download:newFileName,href:URL.createObjectURL(new Blob([text.value]))
-		}).click()
+		if(!/^[^.].*\..*[^.]$/.test(newFileName)){
+			onclick()
+			return
+		}
+		if(newFileName); else return
+		const anchor=document.createElement("a")
+		anchor.download=newFileName
+		anchor.href=URL.createObjectURL(new Blob([text.value]))
+		anchor.click()
 	}
 </script>

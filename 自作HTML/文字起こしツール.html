@@ -9,25 +9,22 @@
 <button disabled id=copyButton>コピー</button>
 <button disabled id=saveButton>メモを保存</button>
 <script type=module>
-	copyButton.onclick=async()=>{
+	copyButton.onclick=async function(){
 		await navigator.clipboard.writeText(result.value)
-		event.target.innerText="コピー済み"
+		this.innerText="コピー済み"
 	}
 	saveButton.onclick=()=>{
-		const anchorElement=document.createElement("a")
-		anchorElement.download=new Date().toLocaleString("sv").replace(/^\d\d|-|:|\d\d$/g,"")+" メモ.txt"
-		anchorElement.href=URL.createObjectURL(new Blob([result.value]))
-		anchorElement.click()
+		const anchor=document.createElement("a")
+		anchor.download=new Date().toLocaleString("sv").replace(/^\d\d|-|:|\d\d$/g,"")+" メモ.txt"
+		anchor.href=URL.createObjectURL(new Blob([result.value]))
+		anchor.click()
 	}
 	const texts=[""]
 	const recognition=new webkitSpeechRecognition
 	recognition.continuous=true
 	recognition.interimResults=true
 	recognition.lang="ja"
-	recognition.onend=()=>{
-		texts.push("")
-		event.target.start()
-	}
+	recognition.start()
 	recognition.onresult=event=>{
 		texts[texts.length-1]=[...event.results].map(([{transcript}])=>transcript).join("")
 		result.value=texts.map(text=>"　"+text).join("\n")
@@ -36,5 +33,8 @@
 		copyButton.innerText="コピー"
 		saveButton.disabled=false
 	}
-	recognition.start()
+	recognition.onend=function(){
+		texts.push("")
+		this.start()
+	}
 </script>

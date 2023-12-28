@@ -11,20 +11,25 @@
 <script type=module>
 	let fileName=""
 	selectButton.onclick=async()=>{
-		const inputElement=document.createElement("input")
-		inputElement.type="file"
-		inputElement.click()
+		const input=document.createElement("input")
+		input.type="file"
+		input.click()
 		await new Promise(resolve=>{
-			inputElement.addEventListener("change",resolve)
+			input.addEventListener("change",resolve)
 		})
-		fileName=inputElement.files[0].name
-		text.value=[...new Uint8Array(await inputElement.files[0].arrayBuffer())].map($=>String.fromCharCode(0x4e00+$)).join("")
+		fileName=input.files[0].name
+		text.value=[...new Uint8Array(await input.files[0].arrayBuffer())].map($=>String.fromCharCode(0x4e00+$)).join("")
 	}
-	saveButton.onclick=()=>{
+	saveButton.onclick=function onclick(){
 		let newFileName=prompt("ファイル名を入力してください。",fileName)
-		if(!/^[^.].*\..*[^.]$/.test(newFileName/*.trim()*/)) event.target.onclick()
-		else if(newFileName) Object.assign(document.createElement("a"),{
-			download:newFileName,href:URL.createObjectURL(new Blob([new Uint8Array([...text.value].map($=>$.charCodeAt()%0x100)).buffer]))
-		}).click()
+		if(!/^[^.].*\..*[^.]$/.test(newFileName/*.trim()*/)){
+			this.onclick()
+			return
+		}
+		if(newFileName); else return
+		const anchor=document.createElement("a")
+		anchor.download=newFileName
+		anchor.href=URL.createObjectURL(new Blob([new Uint8Array([...text.value].map($=>$.charCodeAt()%0x100)).buffer]))
+		anchor.click()
 	}
 </script>
