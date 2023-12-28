@@ -12,11 +12,13 @@
 <h1>new演算子を使用できるコンストラクター</h1>
 <ul></ul>
 <script type=module>
-	const test=async propertyName=>eval("new "+propertyName)
-	const catcher=({message})=>!regExp.test(message)
 	const regExp=/(Illegal|\S+ is not a) constructor/
 	for(const propertyName of Object.getOwnPropertyNames(window).sort()){
-		if(await test(propertyName).catch(catcher)); else continue
+		try{
+			eval("new "+propertyName)
+		} catch({message}){
+			if(regExp.test(message)) continue
+		}
 		const li=document.createElement("li")
 		li.innerText=propertyName
 		document.querySelector("ul").append(li)
