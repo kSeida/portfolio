@@ -30,11 +30,7 @@
 		open(URL.createObjectURL(new Blob([text.value],{type:"text/html"})))
 	}
 	saveButton.onclick=function onclick(){
-		let newFileName=prompt("ファイル名を入力してください。",fileName)
-		if(!/^[^.].*\..*[^.]$/.test(newFileName)){
-			onclick()
-			return
-		}
+		const newFileName=prompt("ファイル名を入力してください。",fileName)
 		if(newFileName); else return
 		const anchor=document.createElement("a")
 		anchor.download=newFileName

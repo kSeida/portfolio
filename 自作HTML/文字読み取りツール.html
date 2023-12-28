@@ -94,15 +94,11 @@
 			range.getContext("2d").drawImage(image,left,top,range.width,range.height,0,0,range.width,range.height)
 			break
 		}
-		const{data:{text}}=await Tesseract.recognize(range.toDataURL()).catch(alert)
-		while(true){
-			try{
-				await navigator.clipboard.writeText(text.trimEnd())
-				break
-			} catch(error){
-				alert(error)
-			}
+		const{data}=await Tesseract.recognize(range.toDataURL()).catch(alert)
+		while(navigator.clipboard===undefined){
+			await new Promise(setTimeout)
 		}
-		alert(text.trimEnd())
+		await navigator.clipboard.writeText(data.text.trimEnd())
+		alert(data.text.trimEnd())
 	}
 </script>

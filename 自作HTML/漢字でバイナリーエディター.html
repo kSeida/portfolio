@@ -21,11 +21,7 @@
 		text.value=[...new Uint8Array(await input.files[0].arrayBuffer())].map($=>String.fromCharCode(0x4e00+$)).join("")
 	}
 	saveButton.onclick=function onclick(){
-		let newFileName=prompt("ファイル名を入力してください。",fileName)
-		if(!/^[^.].*\..*[^.]$/.test(newFileName/*.trim()*/)){
-			this.onclick()
-			return
-		}
+		const newFileName=prompt("ファイル名を入力してください。",fileName)
 		if(newFileName); else return
 		const anchor=document.createElement("a")
 		anchor.download=newFileName
