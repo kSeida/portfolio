@@ -26,7 +26,7 @@
 		if(newFileName); else return
 		const anchor=document.createElement("a")
 		anchor.download=newFileName
-		anchor.href=URL.createObjectURL(new Blob([new Uint8Array([...text.value].map(mapper)).buffer]))
+		anchor.href=URL.createObjectURL(new Blob([new Uint8Array([...text.value].map(mapper))]))
 		anchor.click()
 	}
 </script>
