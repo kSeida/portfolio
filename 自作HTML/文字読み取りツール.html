@@ -36,9 +36,9 @@
 				image.addEventListener("load",resolve)
 				image.addEventListener("error",reject)
 			}).catch(()=>this.click())
-			source.width=this.width
-			source.height=this.height
-			source.getContext("2d").drawImage(this,0,0)
+			source.width=event.target.width
+			source.height=event.target.height
+			source.getContext("2d").drawImage(event.target,0,0)
 			return
 		}
 
@@ -95,6 +95,7 @@
 		}
 		const{data}=await Tesseract.recognize(range.toDataURL()).catch(alert)
 		while(navigator.clipboard===undefined){
+			alert("OKを押してください。")
 			await new Promise(setTimeout)
 		}
 		await navigator.clipboard.writeText(data.text.trimEnd())
