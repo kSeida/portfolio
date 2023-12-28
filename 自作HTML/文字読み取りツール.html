@@ -12,14 +12,13 @@
 <input id=pdfSize placeholder=PDFの倍率（PDFを読み込むならば必須）>
 <button id=selectButton>画像かPDFを選択</button>
 <div>
-	<canvas height=0 id=source width=0>
-	</canvas>
+	<canvas height=0 id=source width=0></canvas>
 </div>
 <script src=https://mozilla.github.io/pdf.js/build/pdf.js></script>
 <script src=https://unpkg.com/tesseract.js/dist/tesseract.min.js></script>
 <script type=module>
 	const image=new Image
-	selectButton.onclick=async()=>{
+	selectButton.onclick=async function(){
 		const input=document.createElement("input")
 		input.type="file"
 		input.click()
@@ -36,14 +35,14 @@
 			await new Promise((resolve,reject)=>{
 				image.addEventListener("load",resolve)
 				image.addEventListener("error",reject)
-			}).catch(()=>selectButton.click())
-			source.width=event.target.width
-			source.height=event.target.height
-			source.getContext("2d").drawImage(event.target,0,0)
+			}).catch(()=>this.click())
+			source.width=this.width
+			source.height=this.height
+			source.getContext("2d").drawImage(this,0,0)
 			return
 		}
 
-		if(!pdfSize.value) return alert("PDFの倍率が不正です。")
+		if(pdfSize.value); else return alert("PDFの倍率が不正です。")
 		const xxx=window["pdfjs-dist/build/pdf"].getDocument(fileReader.result)
 		const yyy=await xxx.promise
 		console.warn(xxx,yyy)

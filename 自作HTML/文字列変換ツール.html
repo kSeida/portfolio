@@ -14,7 +14,7 @@
 		try{
 			let event
 			let $=document.querySelectorAll("textarea")[0].value
-			if(!document.querySelectorAll("textarea")[1].value) throw"値なし"
+			if(document.querySelectorAll("textarea")[1].value); else throw"値なし"
 			$=eval(document.querySelectorAll("textarea")[1].value)
 			document.querySelectorAll("textarea")[2].style=typeof $=="string"?"white-space:pre-wrap":"font-style:italic"
 			document.querySelectorAll("textarea")[2].value=$
