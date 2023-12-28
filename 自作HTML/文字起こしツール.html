@@ -37,4 +37,11 @@
 		texts.push("")
 		this.start()
 	}
+	while(true){
+		const xxx=await new Promise(resolve=>{
+			recognition.onresult=resolve
+			recognition.onend=resolve
+		})
+		console.log(xxx)
+	}
 </script>
