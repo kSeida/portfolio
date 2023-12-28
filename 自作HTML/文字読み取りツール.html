@@ -32,10 +32,15 @@
 		})
 		if(input.files[0].type!="application/pdf"){
 			image.src=fileReader.result
-			await new Promise((resolve,reject)=>{
-				image.addEventListener("load",resolve)
-				image.addEventListener("error",reject)
-			}).catch(()=>this.click())
+			try{
+				await new Promise((resolve,reject)=>{
+					image.addEventListener("load",resolve)
+					image.addEventListener("error",reject)
+				})
+			} catch(error){
+				alert(error)
+				this.click()
+			}
 			source.width=event.target.width
 			source.height=event.target.height
 			source.getContext("2d").drawImage(event.target,0,0)
