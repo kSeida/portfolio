@@ -20,12 +20,13 @@
 		fileName=input.files[0].name
 		text.value=[...new Uint8Array(await input.files[0].arrayBuffer())].map($=>String.fromCharCode(0x4e00+$)).join("")
 	}
+	const mapper=$=>$.charCodeAt()%0x100
 	saveButton.onclick=function onclick(){
 		const newFileName=prompt("ファイル名を入力してください。",fileName)
 		if(newFileName); else return
 		const anchor=document.createElement("a")
 		anchor.download=newFileName
-		anchor.href=URL.createObjectURL(new Blob([new Uint8Array([...text.value].map($=>$.charCodeAt()%0x100)).buffer]))
+		anchor.href=URL.createObjectURL(new Blob([new Uint8Array([...text.value].map(mapper)).buffer]))
 		anchor.click()
 	}
 </script>
