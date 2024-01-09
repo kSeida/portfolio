@@ -25,8 +25,13 @@
 	recognition.interimResults=true
 	recognition.lang="ja"
 	recognition.start()
-	recognition.onresult=event=>{
-		texts[texts.length-1]=[...event.results].map(([{transcript}])=>transcript).join("")
+	recognition.onresult=({results})=>{
+		texts.reverse()
+		texts[0]=""
+		for(const[{transcript}]of results){
+			texts[0]+=transcript
+		}
+		texts.reverse()
 		result.value=texts.map(text=>"　"+text).join("\n")
 		if(copyButton.disabled); else return
 		copyButton.disabled=false
@@ -36,12 +41,5 @@
 	recognition.onend=function(){
 		texts.push("")
 		this.start()
-	}
-	while(true){
-		const xxx=await new Promise(resolve=>{
-			recognition.onresult=resolve
-			recognition.onend=resolve
-		})
-		console.log(xxx)
 	}
 </script>
