@@ -22,21 +22,25 @@
 		const input=document.createElement("input")
 		input.type="file"
 		input.click()
-		await new Promise(resolve=>{
+		{
+			const{promise,resolve}=Promise.withResolvers()
 			input.addEventListener("change",resolve)
-		})
+			await promise
+		}
 		const fileReader=new FileReader
 		fileReader.readAsDataURL(input.files[0])
-		await new Promise(resolve=>{
+		{
+			const{promise,resolve}=Promise.withResolvers()
 			fileReader.addEventListener("load",resolve)
-		})
+			await promise
+		}
 		if(input.files[0].type!="application/pdf"){
 			image.src=fileReader.result
 			try{
-				await new Promise((resolve,reject)=>{
-					image.addEventListener("load",resolve)
-					image.addEventListener("error",reject)
-				})
+				const{promise,resolve,reject}=Promise.withResolvers()
+				image.addEventListener("load",resolve)
+				image.addEventListener("error",reject)
+				await promise
 			} catch(error){
 				alert(error)
 				this.click()
@@ -47,7 +51,9 @@
 			return
 		}
 
-		if(pdfSize.value); else return alert("PDFの倍率が不正です。")
+		if(pdfSize.value); else{
+			return alert("PDFの倍率が不正です。")
+		}
 		const xxx=window["pdfjs-dist/build/pdf"].getDocument(fileReader.result)
 		const yyy=await xxx.promise
 		console.warn(xxx,yyy)
@@ -60,17 +66,16 @@
 		await zzz.promise
 		image.src=source.toDataURL()
 	}
-	const resolver=resolve=>{
-		addEventListener("mousemove",resolve)
-		addEventListener("mouseup",resolve)
-	}
 	const range=document.createElement("canvas")
 	source.onmousedown=async({offsetX,offsetY})=>{
 		if(event.button) return
 		onselectstart=()=>false
 		source.getContext("2d").lineWidth=2
 		while(true){
-			await new Promise(resolver)
+			const{promise,resolve,reject}=Promise.withResolvers()
+			addEventListener("mousemove",resolve)
+			addEventListener("mouseup",resolve)
+			await promise
 			source.getContext("2d").drawImage(image,0,0)
 			const{x,y}=source.getBoundingClientRect()
 			const origX=Math.min(Math.max(0,offsetX),source.width)
