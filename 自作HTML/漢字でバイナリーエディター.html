@@ -14,9 +14,9 @@
 		const input=document.createElement("input")
 		input.type="file"
 		input.click()
-		const{promise,resolve}=Promise.withResolvers()
-		input.addEventListener("change",resolve)
-		await promise
+		Object.assign(input,Promise.withResolvers())
+		input.addEventListener("change",input.resolve)
+		await input.promise
 		fileName=input.files[0].name
 		text.value=[...new Uint8Array(await input.files[0].arrayBuffer())].map($=>String.fromCharCode(0x4e00+$)).join("")
 	}

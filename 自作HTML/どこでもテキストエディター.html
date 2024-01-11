@@ -15,19 +15,15 @@
 		const input=document.createElement("input")
 		input.type="file"
 		input.click()
-		{
-			const{promise,resolve}=Promise.withResolvers()
-			input.addEventListener("change",resolve)
-			await promise
-		}
+		Object.assign(input,Promise.withResolvers())
+		input.addEventListener("change",input.resolve)
+		await input.promise
 		fileName=input.files[0].name
 		const fileReader=new FileReader
 		fileReader.readAsText(input.files[0],prompt("読み込まれるファイルの文字コードを入力してください。\nキャンセルされた場合は、UTF-8で読み込みます。","sjis"))
-		{
-			const{promise,resolve}=Promise.withResolvers()
-			fileReader.addEventListener("load",resolve)
-			await promise
-		}
+		Object.assign(fileReader,Promise.withResolvers())
+		fileReader.addEventListener("load",fileReader.resolve)
+		await fileReader.promise
 		text.value=fileReader.result
 	}
 	htmlPreviewButton.onclick=()=>{
