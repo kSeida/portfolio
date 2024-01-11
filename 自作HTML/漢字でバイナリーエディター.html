@@ -18,7 +18,9 @@
 		input.addEventListener("change",input.resolve)
 		await input.promise
 		fileName=input.files[0].name
+		//
 		text.value=[...new Uint8Array(await input.files[0].arrayBuffer())].map($=>String.fromCharCode(0x4e00+$)).join("")
+		//
 	}
 	const mapper=$=>$.charCodeAt()%0x100
 	saveButton.onclick=function onclick(){
