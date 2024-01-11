@@ -22,25 +22,21 @@
 		const input=document.createElement("input")
 		input.type="file"
 		input.click()
-		{
-			const{promise,resolve}=Promise.withResolvers()
-			input.addEventListener("change",resolve)
-			await promise
-		}
+		Object.assign(input,Promise.withResolvers())
+		input.addEventListener("change",input.resolve)
+		await input.promise
 		const fileReader=new FileReader
 		fileReader.readAsDataURL(input.files[0])
-		{
-			const{promise,resolve}=Promise.withResolvers()
-			fileReader.addEventListener("load",resolve)
-			await promise
-		}
+		Object.assign(fileReader,Promise.withResolvers())
+		fileReader.addEventListener("load",fileReader.resolve)
+		await fileReader.promise
 		if(input.files[0].type!="application/pdf"){
 			image.src=fileReader.result
 			try{
-				const{promise,resolve,reject}=Promise.withResolvers()
-				image.addEventListener("load",resolve)
-				image.addEventListener("error",reject)
-				await promise
+				Object.assign(image,Promise.withResolvers())
+				image.addEventListener("load",image.resolve)
+				image.addEventListener("error",image.reject)
+				await image.promise
 			} catch(error){
 				alert(error)
 				this.click()
