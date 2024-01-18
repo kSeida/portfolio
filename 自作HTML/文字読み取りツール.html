@@ -64,7 +64,7 @@
 		image.src=source.toDataURL()
 	}
 	const range=document.createElement("canvas")
-	source.onmousedown=async({offsetX,offsetY})=>{
+	source.onmousedown=async function $({offsetX,offsetY}){
 		if(event.button) return
 		onselectstart=()=>false
 		source.getContext("2d").lineWidth=2
@@ -100,16 +100,15 @@
 			range.getContext("2d").drawImage(image,left,top,range.width,range.height,0,0,range.width,range.height)
 			break
 		}
-		const{promise,resolve,reject}=Promise.withResolvers()
-		Tesseract.recognize(range.toDataURL()).then(resolve,reject)
-		addEventListener("mousedown",reject)
+		source.onmousedown=()=>false
+		const promise=Tesseract.recognize(range.toDataURL())
 		try{
 			await promise
 		} catch(error){
 			alert(error)
-			throw error
 		}
 		const{data}=await promise
+		source.onmousedown=$
 		while(true){
 			try{
 				await navigator.clipboard.writeText(data.text.trimEnd())
