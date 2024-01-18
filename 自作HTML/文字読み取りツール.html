@@ -102,15 +102,9 @@
 		}
 		source.onmousedown=()=>false
 		const promise=Tesseract.recognize(range.toDataURL())
-		try{
-			await promise
-		} catch(error){
-			source.onmousedown=$
-			alert(error)
-			throw error
-		}
+		await promise.catch(alert)
 		source.onmousedown=$
-		const{data}=await Promise
+		const{data}=await promise
 		while(true){
 			try{
 				await navigator.clipboard.writeText(data.text.trimEnd())
