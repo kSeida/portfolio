@@ -91,8 +91,8 @@
 			}
 			if(event.buttons&0b1) continue
 			onselectstart=null
-			if(origX==destX) break
-			if(origY==destY) break
+			if(origX==destX) throw"origX==destX"
+			if(origY==destY) throw"origY==destY"
 			range.width=Math.abs(origX-destX)
 			range.height=Math.abs(origY-destY)
 			const left=Math.min(origX,destX)
