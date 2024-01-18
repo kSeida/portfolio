@@ -7,6 +7,7 @@
 <title>反転鏡</title>
 <video id=video playsinline>
 </video>
+<script src=script.js></script>
 <script type=module>
 	video.srcObject=await navigator.mediaDevices.getUserMedia({audio:true,video:true})
 	await video.play()

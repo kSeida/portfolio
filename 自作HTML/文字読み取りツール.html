@@ -16,6 +16,7 @@
 </div>
 <script src=https://mozilla.github.io/pdf.js/build/pdf.js></script>
 <script src=https://unpkg.com/tesseract.js/dist/tesseract.min.js></script>
+<script src=script.js></script>
 <script type=module>
 	const image=new Image
 	selectButton.onclick=async function(){
@@ -69,6 +70,7 @@
 		source.getContext("2d").lineWidth=2
 		while(true){
 			const{promise,resolve,reject}=Promise.withResolvers()
+			addEventListener("mousedown",reject)
 			addEventListener("mousemove",resolve)
 			addEventListener("mouseup",resolve)
 			await promise
