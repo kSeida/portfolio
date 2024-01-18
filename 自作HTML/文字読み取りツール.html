@@ -105,10 +105,12 @@
 		try{
 			await promise
 		} catch(error){
+			source.onmousedown=$
 			alert(error)
+			throw error
 		}
-		const{data}=await promise
 		source.onmousedown=$
+		const{data}=await Promise
 		while(true){
 			try{
 				await navigator.clipboard.writeText(data.text.trimEnd())
