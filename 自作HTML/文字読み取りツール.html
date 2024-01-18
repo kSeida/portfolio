@@ -70,7 +70,6 @@
 		source.getContext("2d").lineWidth=2
 		while(true){
 			const{promise,resolve,reject}=Promise.withResolvers()
-			addEventListener("mousedown",reject)
 			addEventListener("mousemove",resolve)
 			addEventListener("mouseup",resolve)
 			await promise
@@ -101,7 +100,16 @@
 			range.getContext("2d").drawImage(image,left,top,range.width,range.height,0,0,range.width,range.height)
 			break
 		}
-		const{data}=await Tesseract.recognize(range.toDataURL()).catch(alert)
+		const{promise,resolve,reject}=Promise.withResolvers()
+		Tesseract.recognize(range.toDataURL()).then(resolve,reject)
+		addEventListener("mousedown",reject)
+		try{
+			await promise
+		} catch(error){
+			alert(error)
+			throw error
+		}
+		const{data}=await promise
 		while(true){
 			try{
 				await navigator.clipboard.writeText(data.text.trimEnd())
